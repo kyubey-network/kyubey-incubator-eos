@@ -3,14 +3,26 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Andoromeda.Framework.EosNode" Version="0.3.0" />
+    <PackageReference Include="Andoromeda.Framework.GitHub" Version="1.0.0" />
+    <PackageReference Include="Andoromeda.Framework.Logger" Version="1.0.0" />
+    <PackageReference Include="Andoromeda.Kyubey.Models" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Pomelo.AspNetCore.TimedJob" Version="2.0.0-rtm-10046" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="4.0.1" />
   </ItemGroup>
   <ItemGroup>
     <!-- Files not to show in IDE -->
     <None Remove="yarn.lock" />
+    <Compile Remove="GitHubRepositories\**" />
 
     <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
     <Content Remove="ClientApp\**" />
+    <Content Remove="GitHubRepositories\**" />
+    <EmbeddedResource Remove="GitHubRepositories\**" />
+    <None Remove="GitHubRepositories\**" />
   </ItemGroup>
 
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
