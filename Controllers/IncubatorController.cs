@@ -15,7 +15,7 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
         //[ProducesResponseType(typeof(ApiResult<IEnumerable<GetSlidesResponse>>), 200)]
         //[ProducesResponseType(typeof(ApiResult), 404)]
         public async Task<IActionResult> TokensAsync(
-            GetBaseRequest request,
+            GetPagingRequest request,
             [FromServices] KyubeyContext db,
             [FromServices] TokenRepositoryFactory tokenRepositoryFactory,
             CancellationToken cancellationToken
