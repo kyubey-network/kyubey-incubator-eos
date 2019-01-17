@@ -14,27 +14,11 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
     [Route("api/v1/lang/{lang}/[controller]")]
     public class IncubatorController : BaseController
     {
-        [HttpGet("tokens")]
-        //[ProducesResponseType(typeof(ApiResult<IEnumerable<GetSlidesResponse>>), 200)]
-        //[ProducesResponseType(typeof(ApiResult), 404)]
-        public async Task<IActionResult> TokensAsync(
-            GetPagingRequest request,
-            [FromServices] KyubeyContext db,
-            [FromServices] TokenRepositoryFactory tokenRepositoryFactory,
-            CancellationToken cancellationToken
-            )
-        {
-            var tokens = await db.Tokens.ToListAsync();
-            var tokenRepository = await tokenRepositoryFactory.CreateAsync(request.Lang);
-            var kbyInfo = tokenRepository.GetSingle("KBY");
-            return ApiResult(kbyInfo);
-        }
-
         [HttpGet("list")]
         [ProducesResponseType(typeof(ApiResult<IEnumerable<GetIncubatorListResponse>>), 200)]
         [ProducesResponseType(typeof(ApiResult), 404)]
         public async Task<IActionResult> List(
-            GetProjectListRequest request,
+            GetIncubatorListRequest request,
             [FromServices] KyubeyContext db,
             [FromServices] TokenRepositoryFactory tokenRepositoryFactory,
             CancellationToken cancellationToken
@@ -44,12 +28,12 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
             var tokenList = tokenRepository.EnumerateAll();
             var projectManifests = new List<GetIncubatorListResponse>();
 
-            tokenList = tokenList.Where(x => x?.Incubation != null).ToList().Skip(request.Skip).Take(request.Take);
+            tokenList = tokenList.Where(x => x?.Incubation != null).ToList();
             var dbIncubations = await db.Tokens.Where(x =>
                 x.HasIncubation && tokenList.FirstOrDefault(t => x.Id == t.Id).Incubation != null &&
-                x.Status == TokenStatus.Active).ToListAsync();
+                x.Status == TokenStatus.Active).ToListAsync(cancellationToken);
 
-            switch (request.status)
+            switch (request.Status)
             {
                 case "not_started":
                     tokenList = tokenList.Where(x => (x.Incubation.Begin_Time ?? DateTime.MinValue) > DateTime.Now).ToList();
@@ -62,7 +46,7 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                     break;
             }
 
-            switch (request.ranking)
+            switch (request.Ranking)
             {
                 case "latest":
                     tokenList = tokenList.OrderByDescending(x => (x.Incubation.Begin_Time ?? DateTime.MinValue));
@@ -71,6 +55,8 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                     tokenList = tokenList.OrderByDescending(x => dbIncubations.FirstOrDefault(s => s.Id == x.Id)?.Raised ?? 0);
                     break;
             }
+
+            tokenList = tokenList.Skip(request.Skip).Take(request.Take);
 
             foreach (var x in tokenList)
             {
