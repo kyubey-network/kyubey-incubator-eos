@@ -2,7 +2,7 @@ using System;
 
 namespace Andoromeda.Kyubey.Incubator.Models
 {
-    public class ProjectManifest
+    public class GetIncubatorListResponse
     {
         public string Id { get; set; }
 
@@ -10,14 +10,14 @@ namespace Andoromeda.Kyubey.Incubator.Models
 
         public string Introduction { get; set; }
 
-        public DateTime? Start_Time { get; set; }
+        public DateTime? StartTime { get; set; }
 
         public DateTime DeadLine { get; set; }
 
-        public decimal Target_Amount { get; set; }
+        public decimal TargetAmount { get; set; }
 
-        public decimal Target_Credits { get; set; }
+        public decimal TargetCredits { get; set; }
 
-        public int Number_Of_Supporters { get; set; }
+        public int NumberOfSupporters { get; set; }
     }
 }
