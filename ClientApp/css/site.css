@@ -1,0 +1,12 @@
+.navbar-custom { padding: 0rem 1rem; font-size: 0.8rem; background: rgba(255,255,255,1); box-shadow: 0px 1px 2px 0px rgba(224,224,224,0.5); }
+body { background-color: #F6F6F6; font-family: sans-serif, 'Microsoft YaHei'; }
+#navbarResponsive .dropdown-menu { left: auto; right: 0; }
+a:hover { cursor: pointer; color: rgba(255,255,255,.75); text-decoration: none; }
+.navbar-custom .navbar-nav .nav-item .nav-link { text-transform: none; font-size: .8rem; font-weight: 700; letter-spacing: .1rem; }
+.page-footer { height: 448px; background: rgba(231,231,231,1); }
+.footer-top { height: 392px; padding-top: 60px; }
+.footer-bottom { line-height: 54px; border-top: 1px solid #D7D7D7; }
+.footer-header { font-weight: bold; margin-bottom: 26px; }
+.footer-subheader { font-size:14px; margin-bottom:6px;}
+.footer-leftbox { width: 208px; }
+.footer-rightbox { width: 265px; }

@@ -1,78 +1,84 @@
 <template>
   <div id="app" class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top navbar-custom">
+      <a class="navbar-brand"><img src="/img/KYUBEY_logo.png" alt="" style="width: 50px;"></a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="#">实验室</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+            <a class="nav-link" href="#">发现项目</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
+            <a class="nav-link" href="#">发布项目</a>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+        <button type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
+
+        <div id="navbarResponsive" class="collapse navbar-collapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a href="/dex" class="nav-link"></a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ">
+            <li class="nav-item">
+              <a class="nav-link">登录</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
+                简体中文
+              </a>
+              <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
+                <a class="dropdown-item">English</a>
+                <a class="dropdown-item">简体中文</a>
+                <a class="dropdown-item">繁體中文</a>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img class="d-block w-100" src="#" alt="First slide">
-        </div>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="#" alt="Second slide">
-        </div>
-        <div class="carousel-item">
-          <img class="d-block w-100" src="#" alt="Third slide">
+    <router-view></router-view>
+    <footer class="page-footer">
+      <div class="container  footer-top">
+        <div class="d-flex">
+          <div class=" footer-leftbox ">
+            <p class="footer-header">关于</p>
+            <p class="footer-subheader">关于我们</p>
+            <p class="footer-subheader">加入我们</p>
+          </div>
+          <div class=" footer-leftbox ">
+            <p class="footer-header">帮助</p>
+            <p class="footer-subheader">常见问题</p>
+            <p class="footer-subheader">项目发起指南</p>
+          </div>
+          <div class="ml-auto footer-rightbox">
+            <p class="footer-header">订阅我们</p>
+            <p class="footer-subheader">留下您的电子邮件地址，订阅我们。将会收到我们的最新动态。感谢您的关注；）</p>
+          </div>
         </div>
       </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
-
-    <!--<div class="row">
-    <div class="col-md-3">
-      <nav-menu params="route: route"></nav-menu>
-    </div>
-    <div class="col-sm-9">
-      <router-view></router-view>
-    </div>
-  </div>-->
+      <div class="container-fluid  footer-bottom">
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <p class="m-0 text-center footer-text-color small">Copyright © Kyubey 2019.All rights reserved.</p>
+          </div>
+          <div class="col-3"></div>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
+
 <script>
+  import $ from 'jquery'
   import NavMenu from './nav-menu'
 
   export default {
@@ -82,9 +88,11 @@
 
     data() {
       return {}
+    },
+    created() {
+      console.log($);
     }
   }
 </script>
 <style>
-
 </style>
