@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import axios from 'axios'
 import router from './router/index'
 import store from './store'
@@ -10,7 +11,7 @@ import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // Registration of global components
 Vue.component('icon', FontAwesomeIcon)
-
+Vue.use(Vuex)
 Vue.use(Element)
 Vue.prototype.$http = axios
 
