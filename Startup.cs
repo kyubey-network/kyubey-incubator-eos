@@ -75,7 +75,7 @@ namespace Andoromeda.Kyubey.Incubator
             app.UseSwaggerUI(c =>
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kyubey Incubator"));
 
-            app.UseStaticFiles();
+            app.UseIncubatorStaticFiles(env, Configuration);
 
             app.UseMvc(routes =>
             {
