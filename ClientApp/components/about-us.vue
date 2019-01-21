@@ -1,100 +1,40 @@
-﻿<template>
-    <div>
-        <h1>Weather forecast</h1>
-
-        <p>This component demonstrates fetching data from the server.</p>
-
-        <div v-if="!forecasts" class="text-center">
-            <p><em>Loading...</em></p>
-            <h1><icon icon="spinner" pulse/></h1>            
+<template>
+    <div class="container top-slider">
+        <h1>关于我们</h1>
+        <div>
+          <h2>
+            我们是谁？
+          </h2>
+          <p>
+            如果您在使用KyubeyDex时遇到问题需要帮助，或有建议想要提出，请发送邮件至邮箱：<a href="mailto:kefu@kyubey.network">kefu@kyubey.network</a>我们会尽快为您进行处理。 感谢您对我们的支持！
+          </p>
         </div>
-
-        <template v-if="forecasts">
-            <table class="table">
-                <thead  class="bg-dark text-white">
-                    <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr :class="index % 2 == 0 ? 'bg-white' : 'bg-light'" v-for="(forecast, index) in forecasts" :key="index">
-                        <td>{{ forecast.dateFormatted }}</td>
-                        <td>{{ forecast.temperatureC }}</td>
-                        <td>{{ forecast.temperatureF }}</td>
-                        <td>{{ forecast.summary }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <nav aria-label="...">
-                <ul class="pagination justify-content-center">
-                    <li :class="'page-item' + (currentPage == 1 ? ' disabled' : '')">
-                        <a class="page-link" href="#" tabindex="-1" @click="loadPage(currentPage - 1)">Previous</a>
-                    </li>
-                    <li :class="'page-item' + (n == currentPage ? ' active' : '')" v-for="(n, index) in totalPages" :key="index">
-                        <a class="page-link" href="#" @click="loadPage(n)">{{n}}</a>
-                    </li>
-                    <li :class="'page-item' + (currentPage < totalPages ? '' : ' disabled')">
-                        <a class="page-link" href="#" @click="loadPage(currentPage + 1)">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </template>
     </div>
 </template>
 
 <script>
-export default {
-  computed: {
-    totalPages: function () {
-      return Math.ceil(this.total / this.pageSize)
-    }
-  },
-
-  data () {
-    return {
-      forecasts: null,
-      total: 0,
-      pageSize: 5,
-      currentPage: 1
-    }
-  },
-
-  methods: {
-    async loadPage (page) {
-      // ES2017 async/await syntax via babel-plugin-transform-async-to-generator
-      // TypeScript can also transpile async/await down to ES5
-      this.currentPage = page
-
-      try {
-        var from = (page - 1) * (this.pageSize)
-        var to = from + this.pageSize
-        let response = await this.$http.get(`/api/weather/forecasts?from=${from}&to=${to}`)
-        console.log(response.data.forecasts)
-        this.forecasts = response.data.forecasts
-        this.total = response.data.total
-      } catch (err) {
-        window.alert(err)
-        console.log(err)
-      }
-      // Old promise-based approach
-      // this.$http
-      //    .get('/api/SampleData/WeatherForecasts')
-      //    .then(response => {
-      //        console.log(response.data)
-      //        this.forecasts = response.data
-      //    })
-      //    .catch((error) => console.log(error))*/
-    }
-  },
-
-  async created () {
-    this.loadPage(1)
-  }
-}
 </script>
 
-<style>
+<style  scoped>
+  .container h1 {
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 40px;
+    padding-top: 58px;
+    margin-bottom: 54px;
+  }
+  .container h2 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+    margin-bottom: 9px;
+  }
+  .container p {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 17px;
+  }
+  .container {
+    min-height: 792px;
+  }
 </style>

@@ -115,6 +115,7 @@
     float: right;
     width: 28px;
     height: 28px;
+    border-radius: 100px;
   }
   .project-description {
     margin: 16px 16px 23px 16px;
