@@ -34,7 +34,7 @@
   import ScatterEOS from 'scatterjs-plugin-eosjs';
   import Eos from 'eosjs'
   import { debug } from 'util';
-  import { mapActions, mapState } from 'vuex'
+  import { mapActions, mapState, mapMutations } from 'vuex'
 
   ScatterJS.plugins(new ScatterEOS());
 

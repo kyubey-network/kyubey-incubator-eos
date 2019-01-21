@@ -27,10 +27,18 @@
             </li>
           </ul>
           <ul class="navbar-nav ">
-            <li class="nav-item">
+            <li class="nav-item" v-if="!isEosLogin">
               <a class="nav-link" @click="showLoginModal">登录</a>
             </li>
-
+            <li class="nav-item" v-if="isEosLogin">
+              <span class="navbar-text font-weight-bold">{{"你好,"}} {{usernameDisplay}}</span>
+            </li>
+            <li class="nav-item" v-if="isEosLogin">
+              <a class="nav-link" v-on:click="switchAccount">{{"切换账号"}}</a>
+            </li>
+            <li class="nav-item" v-if="isEosLogin">
+              <a class="nav-link" v-on:click="eosLogout">{{"退出"}}</a>
+            </li>
             <li class="nav-item dropdown">
               <a href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
                 简体中文
@@ -50,15 +58,24 @@
 </template>
 
 <script>
+  import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
   import LoginModal from './login'
+  import { debug } from 'util';
   export default {
     components: {
-      'loginModal': LoginModal
+      'loginModal': LoginModal,
     },
     methods: {
       showLoginModal() {
         this.$refs.loginModalRef.isShow = true;
-      }
+      },
+      switchAccount() {
+        this.eosLogout();
+        this.showLoginModal();
+      },
+      ...mapActions({
+        eosLogout: 'loginState/eosLogout'
+      }),
     },
     data() {
       return {
@@ -66,6 +83,20 @@
           isShow: false
         }
       }
+    },
+    computed: {
+      ...mapState({
+        usernameDisplay: state => {
+          var _this = this;
+          if (typeof state.loginState.eosLoginState.account !== 'undefined' && state.loginState.eosLoginState.account.name != null) {
+            return state.loginState.eosLoginState.account.name
+          }
+          return null;
+        }
+      }),
+      ...mapGetters({
+        isEosLogin: 'loginState/isEosLogin'
+      })
     },
     created() {
     }

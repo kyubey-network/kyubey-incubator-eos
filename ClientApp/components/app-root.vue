@@ -19,9 +19,6 @@
     methods: {
 
     },
-    data() {
-
-    },
     created() {
       
     }

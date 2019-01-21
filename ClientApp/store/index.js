@@ -17,19 +17,31 @@ const loginStateModule = {
   state: {
     eosLoginState: {}
   },
+  getters: {
+    isEosLogin: state => {
+      if (typeof state.eosLoginState.account !== 'undefined' && state.eosLoginState.account !== null && state.eosLoginState.account.name != null) {
+        return true
+      }
+      return false
+    }
+  },
   mutations: {},
   actions: {
     eosLogin: function (context, { account, loginMode, eos, requiredFields }) {
-      debugger;
       context.state.eosLoginState = {
         account,
         loginMode,
         eos,
         requiredFields
       }
+    },
+    eosLogout: function (context) {
+      context.state.eosLoginState.account = null
+      context.state.eosLoginState.loginMode = null
+      context.state.eosLoginState.eos = null
+      context.state.eosLoginState.requiredFields = null
     }
-  },
-  getters: {}
+  }
 }
 
 // MUTATIONS

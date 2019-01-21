@@ -37,9 +37,6 @@
     methods: {
 
     },
-    data() {
-
-    },
     created() {
     }
   }
