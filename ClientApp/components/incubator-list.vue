@@ -2,7 +2,7 @@
     <div class="container">
       <div class="project-list">
         <div v-for="x in list" class="project-card">
-          <img :src="x.cover" />
+          <img class="project-cover" :src="x.cover" />
           <div class="project-description">
             <h1>{{ x.id }}</h1>
             <img class="project-Avatar" :src="x.avatar" />
