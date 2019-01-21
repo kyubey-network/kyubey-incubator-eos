@@ -28,7 +28,9 @@
     </div>
     <div class="container home-title">
       <h1>发现项目</h1>
-      <a href="">查看更多 >></a>
+      <router-link  :to="'/list'">
+        查看更多 >>
+      </router-link>
     </div>
     <incubatorList></incubatorList>
   </div>

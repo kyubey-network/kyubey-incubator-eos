@@ -2,7 +2,7 @@
 * { font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif; }
 body { background-color: #F6F6F6; }
 #navbarResponsive .dropdown-menu { left: auto; right: 0; }
-a:hover { cursor: pointer; color: rgba(255,255,255,.75); text-decoration: none; }
+a:hover { cursor: pointer; color:blue; text-decoration: none; }
 .navbar-custom .navbar-nav .nav-item .nav-link { text-transform: none; font-size: .8rem; font-weight: 700; letter-spacing: .1rem; }
 .page-footer { height: 448px; background: rgba(231,231,231,1); }
 .footer-top { height: 392px; padding-top: 60px; }
@@ -11,3 +11,4 @@ a:hover { cursor: pointer; color: rgba(255,255,255,.75); text-decoration: none; 
 .footer-subheader { font-size: 14px; margin-bottom: 6px; }
 .footer-leftbox { width: 208px; }
 .footer-rightbox { width: 265px; }
+.top-slider {margin-top: 60px;}

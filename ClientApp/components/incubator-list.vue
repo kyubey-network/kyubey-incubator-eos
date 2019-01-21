@@ -2,7 +2,7 @@
     <div class="container">
       <div class="project-list">
         <div v-for="x in list" class="project-card">
-          <img src="/img/DefaultCover.png" />
+          <img class="project-cover" :src="x.cover" />
           <div class="project-description">
             <h1>{{ x.id }}</h1>
             <img class="project-Avatar" :src="x.avatar" />
@@ -56,7 +56,8 @@
             item.startTime = new Date(item.startTime);
 
             item.deadLine = new Date(item.deadLine);
-            item.avatar ="/img/KYUBEY_logo.png"
+            item.cover = "/token_assets/" + item.id + "/slides/1." + self.lang + ".png"
+            item.avatar = "/token_assets/" + item.id + "/icon.png"
             item.status = item.startTime < self.myDate;
             if (item.targetAmount != 0) {
               item.percentage = (item.targetAmount / item.targetCredits) * 100;
@@ -114,6 +115,7 @@
     float: right;
     width: 28px;
     height: 28px;
+    border-radius: 100px;
   }
   .project-description {
     margin: 16px 16px 23px 16px;
@@ -149,5 +151,9 @@
   .project-percentage {
     float: right;
     color: #bdbdbd;
+  }
+  .project-cover {
+    width: 256px;
+    height: 191px;
   }
 </style>
