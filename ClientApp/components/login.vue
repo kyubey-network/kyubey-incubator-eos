@@ -34,6 +34,7 @@
   import ScatterEOS from 'scatterjs-plugin-eosjs';
   import Eos from 'eosjs'
   import { debug } from 'util';
+  import { mapActions, mapState } from 'vuex'
 
   ScatterJS.plugins(new ScatterEOS());
 
@@ -42,7 +43,7 @@
     data() {
       return {
         isShow: false,
-        network: {
+        eosNetwork: {
           blockchain: 'eos',
           protocol: 'https',
           host: 'nodes.get-scatter.com',
@@ -52,15 +53,20 @@
       };
     },
     methods: {
+      ...mapActions({
+        eosLogin: 'loginState/eosLogin'
+      }),
       async scatterLoginAsync() {
         var _this = this;
         ScatterJS.scatter.connect('kyubey-eos').then(connected => {
           if (!connected) return false;
           const scatter = ScatterJS.scatter;
-          const requiredFields = { accounts: [_this.network] };
+          const requiredFields = { accounts: [_this.eosNetwork] };
           scatter.getIdentity(requiredFields).then(() => {
             const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
-            const eos = scatter.eos(_this.network, Eos, {});
+            const eos = scatter.eos(_this.eosNetwork, Eos, {});
+            _this.eosLogin({ account, loginMode: "scatter", eos, requiredFields });
+            _this.isShow = false;
           }).catch(error => {
             console.error(error);
           });
