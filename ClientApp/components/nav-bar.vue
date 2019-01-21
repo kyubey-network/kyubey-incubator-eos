@@ -18,6 +18,9 @@
           <router-link tag="li" class="nav-item" :to="'/publish'" exact-active-class="active">
             <a class="nav-link" href="#">发布项目</a>
           </router-link>
+          <li class="nav-item ">
+            <a class="nav-link" href="#">LangCode {{$root.lang}}</a>
+          </li>
         </ul>
         <button type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
         <div id="navbarResponsive" class="collapse navbar-collapse">
@@ -41,12 +44,12 @@
             </li>
             <li class="nav-item dropdown">
               <a href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
-                简体中文
+                {{$t('currentLang')}}
               </a>
               <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-                <a class="dropdown-item">English</a>
-                <a class="dropdown-item">简体中文</a>
-                <a class="dropdown-item">繁體中文</a>
+                <a class="dropdown-item" @click="setLang('en')">English</a>
+                <a class="dropdown-item" @click="setLang('zh')">简体中文</a>
+                <a class="dropdown-item" @click="setLang('zh_tw')">繁體中文</a>
               </div>
             </li>
           </ul>
@@ -66,6 +69,9 @@
       'loginModal': LoginModal,
     },
     methods: {
+      setLang: function (param) {
+        this.$i18n.locale = param;
+      },
       showLoginModal() {
         this.$refs.loginModalRef.isShow = true;
       },

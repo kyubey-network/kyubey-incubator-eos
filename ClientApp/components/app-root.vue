@@ -10,6 +10,7 @@
   import $ from 'jquery'
   import NavBar from './nav-bar'
   import Footer from './footer'
+import { debug } from 'util';
 
   export default {
     components: {
@@ -17,10 +18,13 @@
       'footer-bar': Footer
     },
     methods: {
-
+    },
+    computed: {
+      lang: function () {
+        return this.$i18n.locale;
+      }
     },
     created() {
-      
     }
   }
 </script>
