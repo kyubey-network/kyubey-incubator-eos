@@ -32,7 +32,7 @@
         查看更多 >>
       </router-link>
     </div>
-    <incubatorList></incubatorList>
+    <incubatorList skip="0" take="12" ranking="money" status="all"></incubatorList>
   </div>
 </template>
 
