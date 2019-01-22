@@ -1,6 +1,20 @@
 <template>
   <div class="top-slider">
-    <incubatorList skip="0" take="12" ranking="money" status="all"></incubatorList>
+    <h1></h1>
+    <p> </p>
+    <div>
+      <select onchange="checkField(this.value)">
+        <option value="all">全部</option>
+        <option value="not_started">预热</option>
+        <option value="in_progress">众筹中</option>
+        <option value="over">众筹成功</option>
+      </select>
+      <select>
+        <option value="latest">最新上线</option>
+        <option value="money">金额最高</option>
+      </select>
+    </div>
+    <incubatorList v-bind:skip="skip" v-bind:take="take" v-bind:ranking="ranking" v-bind:status="status"></incubatorList>
   </div>
 </template>
 
@@ -11,7 +25,12 @@
       incubatorList
     },
     data() {
-      return {}
+      return {
+        skip: 0,
+        take: 12,
+        ranking: "money",
+        status: "all",
+      }
     }
   }
 </script>
