@@ -8,10 +8,12 @@ import { FontAwesomeIcon } from './icons'
 import 'bootstrap'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import i18n from './locales/index'
 
 // Registration of global components
 Vue.component('icon', FontAwesomeIcon)
 Vue.use(Element)
+
 Vue.prototype.$http = axios
 
 sync(store, router)
@@ -19,8 +21,9 @@ sync(store, router)
 const app = new Vue({
   store,
   router,
-  ...App
-})
+  ...App,
+  i18n
+}).$mount('#app')
 
 export {
   app,

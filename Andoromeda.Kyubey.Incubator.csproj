@@ -25,6 +25,11 @@
     <None Remove="GitHubRepositories\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ClientApp\locales\en.json" />
+    <Content Include="ClientApp\locales\zh.json" />
+    <Content Include="ClientApp\locales\zh_tw.json" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="wwwroot\img\" />
   </ItemGroup>
 

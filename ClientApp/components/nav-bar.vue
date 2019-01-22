@@ -18,6 +18,9 @@
           <router-link tag="li" class="nav-item" :to="'/publish'" exact-active-class="active">
             <a class="nav-link" href="#">发布项目</a>
           </router-link>
+          <li class="nav-item ">
+            <a class="nav-link" href="#">LangCode {{$root.lang}}</a>
+          </li>
         </ul>
         <button type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
         <div id="navbarResponsive" class="collapse navbar-collapse">
@@ -27,18 +30,26 @@
             </li>
           </ul>
           <ul class="navbar-nav ">
-            <li class="nav-item">
+            <li class="nav-item" v-if="!isEosLogin">
               <a class="nav-link" @click="showLoginModal">登录</a>
             </li>
-
+            <li class="nav-item" v-if="isEosLogin">
+              <span class="navbar-text font-weight-bold">{{"你好,"}} {{usernameDisplay}}</span>
+            </li>
+            <li class="nav-item" v-if="isEosLogin">
+              <a class="nav-link" v-on:click="switchAccount">{{"切换账号"}}</a>
+            </li>
+            <li class="nav-item" v-if="isEosLogin">
+              <a class="nav-link" v-on:click="eosLogout">{{"退出"}}</a>
+            </li>
             <li class="nav-item dropdown">
               <a href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
-                简体中文
+                {{$t('currentLang')}}
               </a>
               <div aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu">
-                <a class="dropdown-item">English</a>
-                <a class="dropdown-item">简体中文</a>
-                <a class="dropdown-item">繁體中文</a>
+                <a class="dropdown-item" @click="setLang('en')">English</a>
+                <a class="dropdown-item" @click="setLang('zh')">简体中文</a>
+                <a class="dropdown-item" @click="setLang('zh_tw')">繁體中文</a>
               </div>
             </li>
           </ul>
@@ -50,15 +61,27 @@
 </template>
 
 <script>
+  import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
   import LoginModal from './login'
+  import { debug } from 'util';
   export default {
     components: {
-      'loginModal': LoginModal
+      'loginModal': LoginModal,
     },
     methods: {
+      setLang: function (param) {
+        this.$i18n.locale = param;
+      },
       showLoginModal() {
         this.$refs.loginModalRef.isShow = true;
-      }
+      },
+      switchAccount() {
+        this.eosLogout();
+        this.showLoginModal();
+      },
+      ...mapActions({
+        eosLogout: 'loginState/eosLogout'
+      }),
     },
     data() {
       return {
@@ -66,6 +89,20 @@
           isShow: false
         }
       }
+    },
+    computed: {
+      ...mapState({
+        usernameDisplay: state => {
+          var _this = this;
+          if (typeof state.loginState.eosLoginState.account !== 'undefined' && state.loginState.eosLoginState.account.name != null) {
+            return state.loginState.eosLoginState.account.name
+          }
+          return null;
+        }
+      }),
+      ...mapGetters({
+        isEosLogin: 'loginState/isEosLogin'
+      })
     },
     created() {
     }

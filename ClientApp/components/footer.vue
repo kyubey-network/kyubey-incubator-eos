@@ -4,7 +4,7 @@
       <div class="d-flex">
         <div class=" footer-leftbox ">
           <p class="footer-header">关于</p>
-          <p class="footer-subheader">关于我们</p>
+          <router-link tag="a" :to="'/about-us'" class="footer-subheader bottom-hyperlink" >关于我们</router-link>
           <p class="footer-subheader">加入我们</p>
         </div>
         <div class=" footer-leftbox ">
@@ -37,13 +37,16 @@
     methods: {
 
     },
-    data() {
-
-    },
     created() {
     }
   }
 </script>
 
 <style scoped>
+  .bottom-hyperlink {
+    color: black;
+  }
+  .bottom-hyperlink:hover {
+    text-decoration: underline;
+  }
 </style>
