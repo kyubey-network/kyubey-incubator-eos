@@ -86,6 +86,18 @@
     watch: {
       '$root.lang': function () {
         this.readData();
+      },
+      status: function() {
+        this.readData();
+      },
+      ranking: function () {
+        this.readData();
+      },
+      take: function () {
+        this.readData();
+      },
+      skip: function () {
+        this.readData();
       }
     },
 

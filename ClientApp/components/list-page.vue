@@ -1,19 +1,21 @@
 <template>
   <div class="top-slider">
-    <h1></h1>
-    <p> </p>
+    <div class="container">
+    <h1>发现项目</h1>
+    <p>共267个项目</p>
     <div>
-      <select onchange="checkField(this.value)">
+      <select v-model="status">
         <option value="all">全部</option>
         <option value="not_started">预热</option>
         <option value="in_progress">众筹中</option>
-        <option value="over">众筹成功</option>
+        <option value="over">众筹结束</option>
       </select>
-      <select>
+      <select v-model="ranking">
         <option value="latest">最新上线</option>
         <option value="money">金额最高</option>
       </select>
     </div>
+   </div>
     <incubatorList v-bind:skip="skip" v-bind:take="take" v-bind:ranking="ranking" v-bind:status="status"></incubatorList>
   </div>
 </template>
