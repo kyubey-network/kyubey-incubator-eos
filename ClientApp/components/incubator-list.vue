@@ -32,10 +32,7 @@
     data() {
       return {
         list: [],
-        //skip: 0,
-        //take: 12,
         lang: 'zh',
-        //ranking: 'money',
         myDate: null,
       }
     },
