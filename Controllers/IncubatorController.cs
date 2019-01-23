@@ -72,5 +72,40 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
             }
             return ApiResult(projectManifests);
         }
+
+        [HttpGet("list/total")]
+        [ProducesResponseType(typeof(ApiResult<IEnumerable<GetIncubatorQuantityResponse>>), 200)]
+        [ProducesResponseType(typeof(ApiResult), 404)]
+        public async Task<IActionResult> ListTotal(
+            GetIncubatorListRequest request,
+            [FromServices] KyubeyContext db,
+            [FromServices] TokenRepositoryFactory tokenRepositoryFactory,
+            CancellationToken cancellationToken
+            )
+        {
+            var tokenRepository = await tokenRepositoryFactory.CreateAsync(request.Lang);
+            var tokenList = tokenRepository.EnumerateAll();
+            var incubatorList = new GetIncubatorQuantityResponse();
+
+            tokenList = tokenList.Where(x => x?.Incubation != null).ToList();
+            var dbIncubations = await db.Tokens.Where(x =>
+                x.HasIncubation && tokenList.FirstOrDefault(t => x.Id == t.Id).Incubation != null &&
+                x.Status == TokenStatus.Active).ToListAsync(cancellationToken);
+
+            switch (request.Status)
+            {
+                case "not_started":
+                    tokenList = tokenList.Where(x => (x.Incubation.Begin_Time ?? DateTime.MinValue) > DateTime.Now).ToList();
+                    break;
+                case "in_progress":
+                    tokenList = tokenList.Where(x => (x.Incubation.Begin_Time ?? DateTime.MinValue) < DateTime.Now && x.Incubation.DeadLine > DateTime.Now).ToList();
+                    break;
+                case "over":
+                    tokenList = tokenList.Where(x => x.Incubation.DeadLine < DateTime.Now).ToList();
+                    break;
+            }
+            incubatorList.Total = tokenList.Count();
+            return ApiResult(incubatorList);
+        }
     }
 }

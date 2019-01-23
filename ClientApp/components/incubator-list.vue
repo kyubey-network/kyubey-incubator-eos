@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <div class="project-list">
-        <div v-for="x in list" class="project-card">
+        <router-link v-for="x in list" class="project-card" tag="div" :to="x.url">
           <img class="project-cover" :src="x.cover" />
           <div class="project-description">
             <h1>{{ x.id }}</h1>
@@ -13,7 +13,7 @@
             <hr v-else />
             <p class="project-gray">{{ x.numberOfSupporters }} 人已看好</p>
           </div>
-        </div>
+        </router-link>
       </div>
     </div>
 </template>
@@ -67,9 +67,10 @@
               item.startTime = new Date(item.startTime);
 
               item.deadLine = new Date(item.deadLine);
-              item.cover = "/token_assets/" + item.id + "/slides/1." + self.lang + ".png"
-              item.avatar = "/token_assets/" + item.id + "/icon.png"
+              item.cover = "/token_assets/" + item.id + "/slides/1." + self.lang + ".png";
+              item.avatar = "/token_assets/" + item.id + "/icon.png";
               item.status = item.startTime < self.myDate;
+              item.url = "/detail/" + item.id;
               if (item.targetAmount != 0) {
                 item.percentage = (item.targetAmount / item.targetCredits) * 100;
               } else {

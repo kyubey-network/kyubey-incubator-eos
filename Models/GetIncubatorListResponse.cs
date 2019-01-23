@@ -20,4 +20,9 @@ namespace Andoromeda.Kyubey.Incubator.Models
 
         public int NumberOfSupporters { get; set; }
     }
+
+    public class GetIncubatorQuantityResponse
+    {
+        public int Total { get; set; }
+    }
 }

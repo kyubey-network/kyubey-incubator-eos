@@ -5,16 +5,24 @@
         <li data-target="#homeSlider" data-slide-to="0" class="active"></li>
         <li data-target="#homeSlider" data-slide-to="1"></li>
         <li data-target="#homeSlider" data-slide-to="2"></li>
+        <li data-target="#homeSlider" data-slide-to="3"></li>
       </ol>
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img class="d-block w-100" src="/img/banners/cryptomeetup/bg.png" alt="First slide">
+          <img class="carousel-content" :src="'/img/banners/cryptomeetup/front.' + lang + '.png'" alt="First slide">
         </div>
         <div class="carousel-item">
-          <img class="d-block w-100" src="/img/banners/cryptomeetup/bg.png" alt="Second slide">
+          <img class="d-block w-100" src="/img/banners/dex/bg.png" alt="Second slide">
+          <img class="carousel-content" :src="'/img/banners/dex/front.' + lang + '.png'" alt="First slide">
         </div>
         <div class="carousel-item">
-          <img class="d-block w-100" src="/img/banners/cryptomeetup/bg.png" alt="Third slide">
+          <img class="d-block w-100" src="/img/banners/incubator/bg.png" alt="Third slide">
+          <img class="carousel-content" :src="'/img/banners/incubator/front.' + lang + '.png'" alt="First slide">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="/img/banners/mic/bg.png" alt="Third slide">
+          <img class="carousel-content" :src="'/img/banners/mic/front.' + lang + '.png'" alt="First slide">
         </div>
       </div>
       <a class="carousel-control-prev" href="#homeSlider" role="button" data-slide="prev">
@@ -43,7 +51,18 @@
       incubatorList
     },
     data() {
-      return {}
+      return {
+        lang: 'zh'
+      }
+    },
+    watch: {
+      '$root.lang': function () {
+        if (this.$root.lang == "zh_tw") {
+          this.lang = "zh-Hant";
+        } else {
+          this.lang = this.$root.lang;
+        }
+      }
     }
   }
 </script>
@@ -75,11 +94,19 @@
     max-height: 350px;
     margin: 0 auto;
   }
-
-  /*.carousel {
-    margin: 0 auto;
-    border: 1px solid #000;
-    max-width: 1440px;
-  }*/
-  #homeSlider { margin-top: 60px; }
+  .carousel-content {
+    z-index: 100;
+    position: absolute;
+    top: 0;
+    right: 15%;
+    bottom: 20px;
+    left: 15%;
+    padding-bottom: 20px;
+  }
+  .carousel-item {
+    text-align: center;
+  }
+  #homeSlider {
+    margin-top: 60px;
+  }
 </style>

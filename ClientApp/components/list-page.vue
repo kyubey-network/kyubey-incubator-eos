@@ -1,9 +1,9 @@
 <template>
   <div class="top-slider">
-    <div class="container">
+    <div class="container header">
     <h1>发现项目</h1>
-    <p>共267个项目</p>
-    <div>
+    <h2>共{{ total }}个项目</h2>
+    <div class="header-float">
       <select v-model="status">
         <option value="all">全部</option>
         <option value="not_started">预热</option>
@@ -32,43 +32,71 @@
         take: 12,
         ranking: "money",
         status: "all",
+        total: 0,
       }
+    },
+    methods: {
+      async readData() {
+        this.list = [];
+        if (this.$root.lang == "zh_tw") {
+          this.lang = "zh-Hant";
+        } else {
+          this.lang = this.$root.lang;
+        }
+        this.myDate = new Date();
+        var self = this;
+        await this.$http.get(`/api/v1/lang/${this.lang}/Incubator/list/total?ranking=${this.ranking}&status=${this.status}`)
+          .then(x => {
+            this.total = x.data.data.total;
+          });
+
+      }
+    },
+    watch: {
+      status: function () {
+        this.readData();
+      },
+    },
+
+    async created() {
+      this.readData();
     }
   }
 </script>
 
 <style>
-  .home-title {
-    margin-top: 48px;
+  .header {
+    padding-top: 51px;
     margin-bottom: 32px;
   }
-
-    .home-title h1 {
+    .header h1 {
       display: inline;
       font-size: 24px;
       font-weight: 500;
+      line-height: 33px;
     }
-
-    .home-title a {
+    .header h2 {
+      display: inline;
       font-size: 14px;
-      float: right;
-      padding-top: 10px;
       font-weight: 400;
+      color: #bdbdbd;
+      line-height: 20px;
     }
-
-  .carousel-inner {
-    width: 100%;
-    max-height: 350px !important;
+    .header select {
+      padding-bottom: 3px;
+      margin-right: 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: right;
+    }
+    .header option {
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+  .header-float {
+    padding-top: 10px;
+    float: right;
   }
-  .carousel img {
-    max-height: 350px;
-    margin: 0 auto;
-  }
-
-  /*.carousel {
-    margin: 0 auto;
-    border: 1px solid #000;
-    max-width: 1440px;
-  }*/
-  #homeSlider { margin-top: 60px; }
 </style>
