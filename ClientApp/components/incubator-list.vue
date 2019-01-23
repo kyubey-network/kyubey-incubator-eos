@@ -82,26 +82,17 @@
 
       }
     },
-    watch: {
-      '$root.lang': function () {
-        this.readData();
-      },
-      status: function() {
-        this.readData();
-      },
-      ranking: function () {
-        this.readData();
-      },
-      take: function () {
-        this.readData();
-      },
-      skip: function () {
-        this.readData();
-      }
-    },
 
     async created() {
       this.readData();
+      this.$watch(
+        function () {
+          return this.status + this.take + this.ranking + this.skip + this.$root.lang;
+        },
+        function (newVal, oldVal) {
+          this.readData();
+        }
+      );
     }
   }
 </script>
