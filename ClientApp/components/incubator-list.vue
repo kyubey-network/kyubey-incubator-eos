@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <div class="project-list">
-        <div v-for="x in list" class="project-card">
+        <router-link v-for="x in list" class="project-card" tag="div" :to="x.url">
           <img class="project-cover" :src="x.cover" />
           <div class="project-description">
             <h1>{{ x.id }}</h1>
@@ -13,7 +13,7 @@
             <hr v-else />
             <p class="project-gray">{{ x.numberOfSupporters }} 人已看好</p>
           </div>
-        </div>
+        </router-link>
       </div>
     </div>
 </template>
@@ -22,54 +22,77 @@
   export default {
     computed: {
     },
+    props: [
+      "skip",
+      "take",
+      "ranking",
+      "status",
+    ],
 
     data() {
       return {
         list: [],
-        skip: 0,
-        take: 12,
         lang: 'zh',
-        ranking: 'money',
         myDate: null,
+        total: 0,
       }
     },
 
     methods: {
-      getTime: function (t){
+      getTime: function (t) {
         var _time = new Date(t);
         var year = _time.getFullYear();
         var month = _time.getMonth() + 1;
         var date = _time.getDate();
         return year + "/" + month + "/" + date;
+      },
+
+      async readData() {
+        this.list = [];
+        if (this.$root.lang == "zh_tw") {
+          this.lang = "zh-Hant";
+        } else {
+          this.lang = this.$root.lang;
         }
+        this.myDate = new Date();
+        var self = this;
+        await this.$http.get(`/api/v1/lang/${this.lang}/Incubator/list?ranking=${this.ranking}&status=${this.status}&skip=${this.skip}&take=${this.take}`)
+          .then(x => {
+            self.total = x.data.data.total;
+            self.$emit("monitorTotal", self.total);
+            for (var i = 0; i < x.data.data.incubatorList.length; i++) {
+              var item = x.data.data.incubatorList[i];
+              item.startTime = new Date(item.startTime);
+
+              item.deadLine = new Date(item.deadLine);
+              item.cover = "/token_assets/" + item.id + "/slides/1." + self.lang + ".png";
+              item.avatar = "/token_assets/" + item.id + "/icon.png";
+              item.status = item.startTime < self.myDate;
+              item.url = "/detail/" + item.id;
+              if (item.targetAmount != 0) {
+                item.percentage = (item.targetAmount / item.targetCredits) * 100;
+              } else {
+                item.percentage = 0;
+              }
+              item.startTime = self.getTime(item.startTime);
+              self.list.push(item);
+            }
+
+          });
+
+      }
     },
 
     async created() {
-      this.myDate = new Date();
-      var self = this;
-      await this.$http.get(`/api/v1/lang/${this.lang}/Incubator/list?ranking=${this.ranking}&skip=${this.skip}&take=${this.take}`)
-        .then(x => {
-
-          for (var i = 0; i < x.data.data.length; i++) {
-            var item = x.data.data[i];
-
-            item.startTime = new Date(item.startTime);
-
-            item.deadLine = new Date(item.deadLine);
-            item.cover = "/token_assets/" + item.id + "/slides/1." + self.lang + ".png"
-            item.avatar = "/token_assets/" + item.id + "/icon.png"
-            item.status = item.startTime < self.myDate;
-            if (item.targetAmount != 0) {
-              item.percentage = (item.targetAmount / item.targetCredits) * 100;
-            } else {
-              item.percentage = 0;
-            }
-            item.startTime = self.getTime(item.startTime);
-            self.list.push(item);
-          }
-
-        });
-      
+      this.readData();
+      this.$watch(
+        function () {
+          return this.status + this.take + this.ranking + this.skip + this.$root.lang;
+        },
+        function (newVal, oldVal) {
+          this.readData();
+        }
+      );
     }
   }
 </script>

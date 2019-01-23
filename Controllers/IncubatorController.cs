@@ -15,7 +15,7 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
     public class IncubatorController : BaseController
     {
         [HttpGet("list")]
-        [ProducesResponseType(typeof(ApiResult<IEnumerable<GetIncubatorListResponse>>), 200)]
+        [ProducesResponseType(typeof(ApiResult<IEnumerable<GetIncubatorPaginationResponse>>), 200)]
         [ProducesResponseType(typeof(ApiResult), 404)]
         public async Task<IActionResult> List(
             GetIncubatorListRequest request,
@@ -26,7 +26,8 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
         {
             var tokenRepository = await tokenRepositoryFactory.CreateAsync(request.Lang);
             var tokenList = tokenRepository.EnumerateAll();
-            var projectManifests = new List<GetIncubatorListResponse>();
+            var projectManifests = new GetIncubatorPaginationResponse();
+            projectManifests.IncubatorList = new List<GetIncubatorListResponse>();
 
             tokenList = tokenList.Where(x => x?.Incubation != null).ToList();
             var dbIncubations = await db.Tokens.Where(x =>
@@ -56,11 +57,13 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                     break;
             }
 
+            projectManifests.Total = tokenList.Count();
+
             tokenList = tokenList.Skip(request.Skip).Take(request.Take);
 
             foreach (var x in tokenList)
             {
-                projectManifests.Add(new GetIncubatorListResponse
+                projectManifests.IncubatorList.Add(new GetIncubatorListResponse
                 {
                     Id = x.Id,
                     Introduction = tokenRepository.GetTokenDescription(x.Id, request.Lang),
