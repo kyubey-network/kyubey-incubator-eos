@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Andoromeda.Kyubey.Incubator.Models
 {
@@ -21,8 +22,10 @@ namespace Andoromeda.Kyubey.Incubator.Models
         public int NumberOfSupporters { get; set; }
     }
 
-    public class GetIncubatorQuantityResponse
+    public class GetIncubatorPaginationResponse
     {
         public int Total { get; set; }
+
+        public List<GetIncubatorListResponse> IncubatorList { get; set; }
     }
 }

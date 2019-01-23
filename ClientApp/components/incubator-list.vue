@@ -34,6 +34,7 @@
         list: [],
         lang: 'zh',
         myDate: null,
+        total: 0,
       }
     },
 
@@ -57,10 +58,10 @@
         var self = this;
         await this.$http.get(`/api/v1/lang/${this.lang}/Incubator/list?ranking=${this.ranking}&status=${this.status}&skip=${this.skip}&take=${this.take}`)
           .then(x => {
-
-            for (var i = 0; i < x.data.data.length; i++) {
-              var item = x.data.data[i];
-
+            self.total = x.data.data.total;
+            self.$emit("monitorTotal", self.total);
+            for (var i = 0; i < x.data.data.incubatorList.length; i++) {
+              var item = x.data.data.incubatorList[i];
               item.startTime = new Date(item.startTime);
 
               item.deadLine = new Date(item.deadLine);

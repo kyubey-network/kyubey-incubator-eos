@@ -16,7 +16,7 @@
       </select>
     </div>
    </div>
-    <incubatorList v-bind:skip="skip" v-bind:take="take" v-bind:ranking="ranking" v-bind:status="status"></incubatorList>
+    <incubatorList @monitorTotal="getData" v-bind:skip="skip" v-bind:take="take" v-bind:ranking="ranking" v-bind:status="status"></incubatorList>
   </div>
 </template>
 
@@ -36,31 +36,12 @@
       }
     },
     methods: {
-      async readData() {
-        this.list = [];
-        if (this.$root.lang == "zh_tw") {
-          this.lang = "zh-Hant";
-        } else {
-          this.lang = this.$root.lang;
-        }
-        this.myDate = new Date();
-        var self = this;
-        await this.$http.get(`/api/v1/lang/${this.lang}/Incubator/list/total?ranking=${this.ranking}&status=${this.status}`)
-          .then(x => {
-            this.total = x.data.data.total;
-          });
-
-      }
-    },
-    watch: {
-      status: function () {
-        this.readData();
+      getData(data) {
+        this.total = data;
       },
     },
-
-    async created() {
-      this.readData();
-    }
+    watch: {
+    },
   }
 </script>
 
