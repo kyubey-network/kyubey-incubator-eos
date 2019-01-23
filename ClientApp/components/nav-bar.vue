@@ -34,7 +34,7 @@
               <a class="nav-link" @click="showLoginModal">登录</a>
             </li>
             <li class="nav-item" v-if="isEosLogin">
-              <span class="navbar-text font-weight-bold">{{"你好,"}} {{usernameDisplay}}</span>
+              <span class="navbar-text font-weight-bold">{{$t('hi')}}, {{usernameDisplay}}</span>
             </li>
             <li class="nav-item" v-if="isEosLogin">
               <a class="nav-link" v-on:click="switchAccount">{{"切换账号"}}</a>
