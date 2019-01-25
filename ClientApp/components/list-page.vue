@@ -6,25 +6,28 @@
     <div class="header-float">
       <select v-model="status">
         <option value="all">全部</option>
-        <option value="not_started">预热</option>
-        <option value="in_progress">众筹中</option>
-        <option value="over">众筹结束</option>
+        <option value="not_started">尚未开始</option>
+        <option value="in_progress">正正进行</option>
+        <option value="over">已经结束</option>
       </select>
-      <select v-model="ranking">
+      <select v-model="ranking" class="header-right">
         <option value="latest">最新上线</option>
         <option value="money">金额最高</option>
       </select>
     </div>
    </div>
     <incubatorList @monitorTotal="getData" v-bind:skip="skip" v-bind:take="take" v-bind:ranking="ranking" v-bind:status="status"></incubatorList>
+    <toTop speed="80" position="50"></toTop>
   </div>
 </template>
 
 <script>
   import incubatorList from './incubator-list.vue'
+  import toTop from './to-top.vue'
   export default {
     components: {
-      incubatorList
+      incubatorList,
+      toTop
     },
     data() {
       return {
@@ -79,5 +82,8 @@
   .header-float {
     padding-top: 10px;
     float: right;
+  }
+  .header-right {
+    margin-right: 40px !important;
   }
 </style>
