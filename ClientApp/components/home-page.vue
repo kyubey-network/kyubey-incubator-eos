@@ -36,19 +36,22 @@
     </div>
     <div class="container home-title">
       <h1>发现项目</h1>
-      <router-link  :to="'/list'">
+      <router-link :to="'/list'">
         查看更多 >>
       </router-link>
     </div>
     <incubatorList skip="0" take="12" ranking="money" status="all"></incubatorList>
+    <toTop speed="80" position="50"></toTop>
   </div>
 </template>
 
 <script>
   import incubatorList from './incubator-list.vue'
+  import toTop from './to-top.vue'
   export default {
     components: {
-      incubatorList
+      incubatorList,
+      toTop
     },
     data() {
       return {
@@ -84,6 +87,7 @@
       float: right;
       padding-top: 10px;
       font-weight: 400;
+      margin-right: 36px;
     }
 
   .carousel-inner {
