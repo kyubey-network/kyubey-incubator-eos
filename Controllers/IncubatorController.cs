@@ -1,3 +1,5 @@
+using Andoromeda.Framework.EosNode;
+using Andoromeda.Framework.Logger;
 using Andoromeda.Kyubey.Incubator.Models;
 using Andoromeda.Kyubey.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -73,7 +75,93 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                     TargetCredits = x.Incubation.Goal
                 });
             }
-            return ApiResult(projectManifests);
+            return ApiResultOld(projectManifests);
+        }
+
+        [HttpGet("wording/{id}")]
+        [ProducesResponseType(typeof(IEnumerable<GetWordingResponse>), 200)]
+        public async Task<IActionResult> WordingAsync(
+            string id,
+            GetBaseRequest request,
+            [FromServices] KyubeyContext db,
+            [FromServices] TokenRepositoryFactory tokenRepositoryFactory,
+            CancellationToken cancellationToken)
+        {
+            var dbToken = await db.Tokens.FirstOrDefaultAsync(x => x.Id == id && x.Status == TokenStatus.Active, cancellationToken);
+            if (dbToken == null)
+            {
+                return ApiResult(404, "not found this token");
+            }
+            var tokenRepository = await tokenRepositoryFactory.CreateAsync(request.Lang);
+
+            var banners = tokenRepository.GetTokenIncubationBannereRelativePaths(id, request.Lang).Select(x => $"/token_assets/" + x).ToList();
+
+            var updates = tokenRepository.GetTokenIncubatorUpdates(id, request.Lang)?.OrderBy(x => x.Time)?.ToList();
+
+            var response = new GetWordingResponse()
+            {
+                TokenId = id,
+                Description = tokenRepository.GetTokenDescription(id, request.Lang),
+                Detail = tokenRepository.GetTokenIncubationDetail(id, request.Lang),
+                Updates = updates,
+                Sliders = banners
+            };
+
+            return ApiResult(response);
+        }
+
+        [HttpGet("info/{id}")]
+        [ProducesResponseType(typeof(IEnumerable<GetWordingResponse>), 200)]
+        public async Task<IActionResult> InfoAsync(
+            string id,
+            GetBaseRequest request,
+            [FromServices] KyubeyContext db,
+            [FromServices] TokenRepositoryFactory tokenRepositoryFactory,
+            [FromServices] NodeApiInvoker nodeApiInvoker,
+            [FromServices] ILogger logger,
+            CancellationToken cancellationToken)
+        {
+            var dbToken = await db.Tokens.FirstOrDefaultAsync(x => x.Id == id && x.Status == TokenStatus.Active, cancellationToken);
+            if (dbToken == null)
+            {
+                return ApiResult(404, "not found this token");
+            }
+
+            var tokenRepository = await tokenRepositoryFactory.CreateAsync(request.Lang);
+            var tokenInfo = tokenRepository.GetSingle(id);
+            var supporterCount = await db.RaiseLogs.Where(x =>
+                      (x.Timestamp > (tokenInfo.Incubation.Begin_Time ?? DateTime.MinValue)
+                      && x.Timestamp < tokenInfo.Incubation.DeadLine) &&
+                      x.TokenId == dbToken.Id && !x.Account.StartsWith("eosio.")).CountAsync();
+
+            GetSymbolSupplyResponse symbolSupply = null;
+            try
+            {
+                symbolSupply = await nodeApiInvoker.GetSymbolSupplyAsync(tokenInfo?.Basic?.Contract?.Transfer, id, cancellationToken);
+            }
+            catch (ArgumentNullException ex)
+            {
+                logger.LogError(ex.ToString());
+            }
+
+            var currentPrice = 0;
+            var balance = 0;
+
+            var response = new GetIncubatorInfoResponse()
+            {
+                CurrentPrice = currentPrice,
+                Balance = balance,
+                Contract = tokenInfo.Basic?.Contract?.Transfer,
+                CurrentRaised = dbToken.Raised,
+                IsFavorite = false,
+                Protocol = tokenInfo.Basic?.Protocol,
+                RemainingDay = tokenInfo?.Incubation?.DeadLine == null ? -999 : Math.Max((tokenInfo.Incubation.DeadLine - DateTime.Now).Days, 0),
+                SupporterCount = supporterCount,
+                Target = tokenInfo?.Incubation?.Goal ?? 0,
+                TotalSupply = (decimal)(symbolSupply?.MaxSupply ?? 0)
+            };
+
+            return ApiResult(response);
         }
     }
 }

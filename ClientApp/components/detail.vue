@@ -3,16 +3,16 @@
     <div class="page-content">
       <div class="row container">
         <div class="detail-left">
-          <h1 class="detail-header">KBY</h1>
+          <h1 class="detail-header">{{tokenId}}</h1>
           <div class="detail-slider">
             <el-carousel trigger="click" style="width:100%;height:100%;" height="100%">
-              <el-carousel-item v-for="item in 4" :key="item">
-                <img src="/img/DefaultCover.png" style="width:100%; height:100%;" />
+              <el-carousel-item v-for="item in wording.sliders" :key="item">
+                <img :src="item" style="width:100%; height:100%;" />
               </el-carousel-item>
             </el-carousel>
           </div>
           <div class="token-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar sic tempor.
+            {{wording.description}}
           </div>
         </div>
         <div class="detail-right">
@@ -24,16 +24,16 @@
           <ul class="detail-nav">
             <li v-bind:class="{ active: currentNav=='detail' }" @click="currentNav='detail'"><a>项目介绍</a></li>
             <li v-bind:class="{ active: currentNav=='update' }" @click="currentNav='update'"><a>更新记录</a></li>
-            <li v-bind:class="{ active: currentNav=='comments' }" @click="currentNav='comments'"><a>用户评论</a></li>
+            <!--<li v-bind:class="{ active: currentNav=='comments' }" @click="currentNav='comments'"><a>用户评论</a></li>-->
           </ul>
-          <div v-if="currentNav=='detail'" class="" v-html="marked('# Marked in the browser\n\nRendered by **marked**.')">
+          <div v-if="currentNav=='detail'" class="page-bottom-left-box" v-html="marked(wording.detail)">
 
           </div>
           <div v-if="currentNav=='update'" class="">
-            <h1>2018-12-21 更新</h1>
-            <span>Kyubey孵化器推出DAIBO分布式自治班科协议标准，为分布式应用发行智能通证，并提供一站式孵化服务，服务内容包括但不限于项目立项，技术咨询，众筹，通证发行及流通，分布式自治组织以及为开发者提供可自动打包开发的工具。</span>
-            <h1>2018-12-21 更新</h1>
-            <span>Kyubey孵化器推出DAIBO分布式自治班科协议标准，为分布式应用发行智能通证，并提供一站式孵化服务，服务内容包括但不限于项目立项，技术咨询，众筹，通证发行及流通，分布式自治组织以及为开发者提供可自动打包开发的工具。</span>
+            <div v-for="item in wording.updates">
+              <h1>{{wording.updates.time}} {{wording.updates.title}}</h1>
+              <span  v-html="marked(item.content)"></span>
+            </div>
           </div>
           <div v-if="currentNav=='comments'" class="">
             comments
@@ -65,24 +65,44 @@
     },
     data() {
       return {
-        currentNav: 'update'
+        currentNav: 'detail',
+        tokenId: null,
+        wording: {
+
+        }
       };
     },
     methods: {
       marked: function (input) {
         return marked(input);
+      },
+      async getWording() {
+        var _this = this;
+        await this.$http.get(`/api/v1/lang/${_this.$root.lang}/Incubator/wording/${_this.tokenId}`).then(res => {
+          if (res.status == 200) {
+            _this.wording = res.data;
+          }
+        });
       }
     },
     created() {
+      this.tokenId = this.$route.params.id;
+      this.getWording();
     }
   }
 
 </script>
+<style>
+  .page-bottom-left-box img { max-width: 100%; }
+  .content-containner img { max-width: 100%; }
+</style>
+
 <style scoped>
+  .page-bottom-left-box { max-width: 100%; }
   .token-description { margin-top: 19px; }
   .detail-right { width: 438px; display: inline-block; margin-left: 58px; }
   .container { max-width: 1440px; }
-  .page-containner { margin-top: 60px; }
+  .page-containner { margin-top: 60px; min-width: 1440px; }
   .detail-header { font-size: 24px; margin-bottom: 15px; }
   .page-content { padding-top: 50px; }
   .detail-slider { height: 586px; background-color: gray; }

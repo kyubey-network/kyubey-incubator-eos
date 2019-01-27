@@ -4,6 +4,7 @@ using Andoromeda.Kyubey.Incubator.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -83,6 +84,68 @@ namespace Andoromeda.Kyubey.Incubator.Repository
             var availablePath = availableFilePaths.FirstOrDefault();
             if (availablePath != null)
                 return File.ReadAllText(availablePath);
+            return null;
+        }
+
+        public string GetTokenIncubationDetail(string tokenId, string cultureStr)
+        {
+            var folderPath = Path.Combine(tokenFolderAbsolutePath, tokenId, "incubator");
+            if (!Directory.Exists(folderPath))
+            {
+                return null;
+            }
+
+            var availablePath = GlobalizationFileFinder.GetCultureFiles(folderPath, cultureStr, ".md").Where(x => Path.GetFileNameWithoutExtension(x).StartsWith("detail.")).FirstOrDefault();
+            if (availablePath != null)
+                return File.ReadAllText(availablePath);
+            return null;
+        }
+
+        public IEnumerable<string> GetTokenIncubationBannereRelativePaths(string tokenId, string cultureStr)
+        {
+            var sliderFolderPath = Path.Combine(tokenFolderAbsolutePath, tokenId, "slides");
+            if (!Directory.Exists(sliderFolderPath))
+            {
+                yield return null;
+            }
+
+            var availablePaths = GlobalizationFileFinder.GetCultureFiles(sliderFolderPath, cultureStr, ".png").ToList();
+
+            foreach (var path in availablePaths)
+            {
+                Uri absolutePath = new Uri(path);
+                Uri folderPath = new Uri(tokenFolderAbsolutePath + "/");
+                string relativePath = folderPath.MakeRelativeUri(absolutePath).ToString();
+                yield return relativePath;
+            };
+        }
+
+        public List<TokenIncubatorUpdateModel> GetTokenIncubatorUpdates(string tokenId, string cultureStr)
+        {
+            var folderPath = Path.Combine(tokenFolderAbsolutePath, tokenId, "updates");
+            if (!Directory.Exists(folderPath))
+            {
+                return null;
+            }
+
+            var availableFiles = GlobalizationFileFinder.GetCultureFiles(folderPath, cultureStr, ".json").ToList();
+            var mainFile = availableFiles.FirstOrDefault(x => x.EndsWith(".json"));
+            if (!string.IsNullOrWhiteSpace(mainFile))
+            {
+                var updateList = JsonConvert.DeserializeObject<List<TokenIncubatorUpdateModel>>(System.IO.File.ReadAllText(mainFile));
+                if (updateList != null)
+                {
+                    foreach (var u in updateList)
+                    {
+                        var contentPath = Path.Combine(folderPath, u.Content);
+                        if (!string.IsNullOrWhiteSpace(u.Content) && File.Exists(contentPath))
+                        {
+                            u.Content = System.IO.File.ReadAllText(contentPath);
+                        }
+                    }
+                }
+                return updateList;
+            }
             return null;
         }
 
