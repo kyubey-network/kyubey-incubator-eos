@@ -37,7 +37,7 @@
       </div>
       <div class="box-item">
         <div class="box-item-val">
-          *********
+          {{info.contract}}
         </div>
         <div class="box-item-name">
           合约名称
@@ -74,7 +74,6 @@
         var _this = this;
         await this.$http.get(`/api/v1/lang/${_this.$root.lang}/Incubator/info/${_this.tokenId}`).then(res => {
           if (res.status == 200) {
-            debugger;
             _this.info = res.data;
           }
         });
@@ -108,10 +107,10 @@
 
   .top-right-box { width: 438px; height: 85px; border-radius: 2px; border: 1px solid rgba(221,221,221,1); margin-bottom: 25px; }
     .top-right-box .box-item { min-width: 108px; display: inline-block; text-align: center; }
-      .top-right-box .box-item:first-child { margin-left: 30px; }
-      .top-right-box .box-item .box-item-val { font-size: 24px; font-weight: 500; }
-      .top-right-box .box-item .box-item-name { font-size: 14px; font-weight: 300; }
-      .top-right-box .box-item:last-child { border-left: 1px solid rgba(221,221,221,1); min-width: 80px; }
+      .top-right-box .box-item:first-child { margin-left: 15px; }
+      .top-right-box .box-item .box-item-val { font-size: 18px; font-weight: 500; }
+      .top-right-box .box-item .box-item-name { font-size: 16px; font-weight: 400; }
+      .top-right-box .box-item:last-child { border-left: 1px solid rgba(221,221,221,1); min-width: 80px; margin-left: 15px; }
 
   .flex-center { display: flex; align-items: center; }
 

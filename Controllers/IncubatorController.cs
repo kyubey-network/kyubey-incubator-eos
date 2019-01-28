@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static Andoromeda.Kyubey.Incubator.Repository.TokenRespository;
+using static Andoromeda.Kyubey.Incubator.Repository.TokenInfoRespository;
 
 namespace Andoromeda.Kyubey.Incubator.Controllers
 {
@@ -144,14 +144,14 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                 logger.LogError(ex.ToString());
             }
 
-            var currentPrice = 0;
+            var currentPrice = await tokenRepository.GetContractPriceAsync(id);
             var balance = 0;
 
             var response = new GetIncubatorInfoResponse()
             {
-                CurrentPrice = currentPrice,
+                CurrentPrice = currentPrice?.BuyPrice ?? 0,
                 Balance = balance,
-                Contract = tokenInfo.Basic?.Contract?.Transfer,
+                Contract = tokenInfo.Basic?.Contract?.Pricing ?? tokenInfo.Basic?.Contract?.Transfer,
                 CurrentRaised = dbToken.Raised,
                 IsFavorite = false,
                 Protocol = tokenInfo.Basic?.Protocol,

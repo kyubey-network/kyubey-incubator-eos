@@ -1,7 +1,11 @@
+using Andoromeda.Framework.EosNode;
 using Andoromeda.Framework.GitHub;
+using Andoromeda.Framework.Logger;
 using Andoromeda.Kyubey.Incubator.Lib;
 using Andoromeda.Kyubey.Incubator.Models;
+using Andoromeda.Kyubey.Incubator.Repository;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.NodeServices;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
@@ -9,22 +13,22 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using static Andoromeda.Kyubey.Incubator.Repository.TokenRespository;
 
 namespace Andoromeda.Kyubey.Incubator.Repository
 {
-    public class TokenRespository : IRepository<TokenManifest>
+    public class TokenInfoRespository
     {
         private string tokenFolderAbsolutePath;
         private const string manifestFileName = "manifest.json";
         private const string iconFileName = "icon.png";
-
+        private IServiceProvider _provider;
         private string _lang;
 
-        public TokenRespository(string path, string lang)
+        public TokenInfoRespository(string path, string lang, IServiceProvider provider)
         {
             _lang = lang;
             tokenFolderAbsolutePath = path;
+            _provider = provider;
         }
 
         public IEnumerable<TokenManifest> EnumerateAll()
@@ -130,6 +134,7 @@ namespace Andoromeda.Kyubey.Incubator.Repository
 
             var availableFiles = GlobalizationFileFinder.GetCultureFiles(folderPath, cultureStr, ".json").ToList();
             var mainFile = availableFiles.FirstOrDefault(x => x.EndsWith(".json"));
+
             if (!string.IsNullOrWhiteSpace(mainFile))
             {
                 var updateList = JsonConvert.DeserializeObject<List<TokenIncubatorUpdateModel>>(System.IO.File.ReadAllText(mainFile));
@@ -149,34 +154,88 @@ namespace Andoromeda.Kyubey.Incubator.Repository
             return null;
         }
 
-        public class TokenRepositoryFactory
+        public async Task<TokenContractPriceModel> GetContractPriceAsync(string id)
         {
-            private IConfiguration _config;
-            private IHostingEnvironment _hostingEnv;
+            var logger = (ILogger)_provider.GetService(typeof(ILogger));
 
-            public TokenRepositoryFactory(IConfiguration config, IHostingEnvironment hostingEnv)
+            try
             {
-                _config = config;
-                _hostingEnv = hostingEnv;
-            }
+                var tokenInfo = GetSingle(id);
+                var currentPriceJavascript = GetPriceJsText(id);
 
-            public async Task<TokenRespository> CreateAsync(string lang)
-            {
-                var path = Path.Combine(_hostingEnv.ContentRootPath, _config["RepositoryStore"], "token-list");
-                if (!Directory.Exists(path))
+                var nodeService = (INodeServices)_provider.GetService(typeof(INodeServices));
+                var nodeApiService = (NodeApiInvoker)_provider.GetService(typeof(NodeApiInvoker));
+
+                var paramRows = new object[] { };
+
+                if (!string.IsNullOrWhiteSpace(tokenInfo.Basic.Contract.Pricing)
+                    && !string.IsNullOrWhiteSpace(tokenInfo.Basic.Price_Scope)
+                    && !string.IsNullOrWhiteSpace(tokenInfo.Basic.Price_Table))
                 {
-                    await GitHubSynchronizer.CreateOrUpdateRepositoryAsync(
-    "kyubey-network", "token-list", "master",
-    Path.Combine(_config["RepositoryStore"], "token-list"));
+                    try
+                    {
+                        paramRows = (await nodeApiService.GetTableRowsAsync<IDictionary<string, object>>
+                            (tokenInfo.Basic.Contract.Pricing, tokenInfo.Basic.Price_Table, tokenInfo.Basic.Price_Scope)).rows.ToArray();
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogError(ex.ToString());
+                    }
                 }
-                return new TokenRespository(path, lang);
-            }
 
-            public TokenRespository Create(string lang)
+                var buyPrice = await nodeService.InvokeExportAsync<decimal>("./price", "buyPrice", paramRows, currentPriceJavascript);
+                buyPrice = decimal.Round(buyPrice, 8, MidpointRounding.AwayFromZero);
+
+                var sellPrice = await nodeService.InvokeExportAsync<decimal>("./price", "sellPrice", paramRows, currentPriceJavascript);
+                sellPrice = decimal.Round(sellPrice, 8, MidpointRounding.AwayFromZero);
+
+                return new TokenContractPriceModel
+                {
+                    BuyPrice = buyPrice,
+                    SellPrice = sellPrice
+                };
+            }
+            catch (Exception ex)
             {
-                return CreateAsync(lang).Result;
+                logger.LogError(ex.ToString());
+                return new TokenContractPriceModel
+                {
+                    BuyPrice = 0,
+                    SellPrice = 0
+                };
             }
         }
+    }
+}
+
+public class TokenRepositoryFactory
+{
+    private IConfiguration _config;
+    private IHostingEnvironment _hostingEnv;
+    private IServiceProvider _provider;
+
+    public TokenRepositoryFactory(IConfiguration config, IHostingEnvironment hostingEnv, IServiceProvider provider)
+    {
+        _config = config;
+        _hostingEnv = hostingEnv;
+        _provider = provider;
+    }
+
+    public async Task<TokenInfoRespository> CreateAsync(string lang)
+    {
+        var path = Path.Combine(_hostingEnv.ContentRootPath, _config["RepositoryStore"], "token-list");
+        if (!Directory.Exists(path))
+        {
+            await GitHubSynchronizer.CreateOrUpdateRepositoryAsync(
+"kyubey-network", "token-list", "master",
+Path.Combine(_config["RepositoryStore"], "token-list"));
+        }
+        return new TokenInfoRespository(path, lang, _provider);
+    }
+
+    public TokenInfoRespository Create(string lang)
+    {
+        return CreateAsync(lang).Result;
     }
 }
 
