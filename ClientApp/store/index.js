@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { debug } from 'util';
 
 Vue.use(Vuex)
 
@@ -23,6 +22,12 @@ const loginStateModule = {
         return true
       }
       return false
+    },
+    eosUsername: state => {
+      if (typeof state.eosLoginState.account !== 'undefined' && state.eosLoginState.account.name != null) {
+        return state.eosLoginState.account.name
+      }
+      return null
     }
   },
   mutations: {},

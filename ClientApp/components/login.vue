@@ -49,7 +49,8 @@
           host: 'nodes.get-scatter.com',
           port: 443,
           chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-        }
+        },
+        eosScatter: null
       };
     },
     methods: {
@@ -59,14 +60,25 @@
       async scatterLoginAsync() {
         var _this = this;
         ScatterJS.scatter.connect('kyubey-eos').then(connected => {
-          if (!connected) return false;
-          const scatter = ScatterJS.scatter;
-          const requiredFields = { accounts: [_this.eosNetwork] };
-          scatter.getIdentity(requiredFields).then(() => {
-            const account = scatter.identity.accounts.find(x => x.blockchain === 'eos');
-            const eos = scatter.eos(_this.eosNetwork, Eos, {});
-            _this.eosLogin({ account, loginMode: "scatter", eos, requiredFields });
+          if (!connected) {
+            this.$message({
+              message: '请安装Scatter钱包',
+              type: 'error'
+            });
+            return;
+          };
+
+          _this.eosScatter = ScatterJS.scatter;
+
+          _this.eosScatter.getIdentity(_this.eosRequiredFields).then(() => {
+
+            const account = _this.eosScatter.identity.accounts.find(x => x.blockchain === 'eos');
+
+            const eos = () => _this.eosScatter.eos(_this.eosNetwork, Eos, {});
+
+            _this.eosLogin({ account, loginMode: "scatter", eos, requiredFields: _this.eosRequiredFields });
             _this.isShow = false;
+
           }).catch(error => {
             console.error(error);
           });
@@ -78,6 +90,12 @@
     },
     mounted() {
 
+    },
+    computed: {
+      eosRequiredFields: function () {
+        var _this = this;
+        return { accounts: [this.eosNetwork] };
+      }
     },
     created: function () {
     },

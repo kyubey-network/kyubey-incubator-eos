@@ -30,16 +30,16 @@
             </li>
           </ul>
           <ul class="navbar-nav ">
-            <li class="nav-item" v-if="!isEosLogin">
+            <li class="nav-item" v-if="!$root.isEosLogin">
               <a class="nav-link" @click="showLoginModal">登录</a>
             </li>
-            <li class="nav-item" v-if="isEosLogin">
-              <span class="navbar-text font-weight-bold">{{$t('hi')}}, {{usernameDisplay}}</span>
+            <li class="nav-item" v-if="$root.isEosLogin">
+              <span class="navbar-text font-weight-bold">{{$t('hi')}}, {{$root.eosUsername}}</span>
             </li>
-            <li class="nav-item" v-if="isEosLogin">
+            <li class="nav-item" v-if="$root.isEosLogin">
               <a class="nav-link" v-on:click="switchAccount">{{"切换账号"}}</a>
             </li>
-            <li class="nav-item" v-if="isEosLogin">
+            <li class="nav-item" v-if="$root.isEosLogin">
               <a class="nav-link" v-on:click="eosLogout">{{"退出"}}</a>
             </li>
             <li class="nav-item dropdown">
@@ -91,18 +91,9 @@
       }
     },
     computed: {
-      ...mapState({
-        usernameDisplay: state => {
-          var _this = this;
-          if (typeof state.loginState.eosLoginState.account !== 'undefined' && state.loginState.eosLoginState.account.name != null) {
-            return state.loginState.eosLoginState.account.name
-          }
-          return null;
-        }
-      }),
       ...mapGetters({
         isEosLogin: 'loginState/isEosLogin'
-      })
+      }),
     },
     created() {
     }

@@ -32,7 +32,7 @@
           <div v-if="currentNav=='update'" class="">
             <div v-for="item in wording.updates">
               <h1>{{wording.updates.time}} {{wording.updates.title}}</h1>
-              <span  v-html="marked(item.content)"></span>
+              <span v-html="marked(item.content)"></span>
             </div>
           </div>
           <div v-if="currentNav=='comments'" class="">
@@ -74,6 +74,8 @@
     },
     methods: {
       marked: function (input) {
+        if (input == null)
+          return null;
         return marked(input);
       },
       async getWording() {

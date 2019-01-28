@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Andoromeda.Kyubey.Incubator.Models
 {
     public class GetIncubatorInfoResponse
     {
         public decimal CurrentPrice { get; set; }
 
-        public decimal? Balance { get; set; }
+        public decimal? EOSBalance { get; set; }
+
+        public decimal? TokenBalance { get; set; }
 
         public bool IsFavorite { get; set; }
 

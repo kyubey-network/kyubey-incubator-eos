@@ -145,12 +145,14 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
             }
 
             var currentPrice = await tokenRepository.GetContractPriceAsync(id);
-            var balance = 0;
+            var eosBalance = await nodeApiInvoker.GetCurrencyBalanceAsync("", "eosio.token", "EOS", cancellationToken);
+            var tokenBalance = await nodeApiInvoker.GetCurrencyBalanceAsync("", tokenInfo?.Basic?.Contract?.Transfer, id, cancellationToken); ;
 
             var response = new GetIncubatorInfoResponse()
             {
                 CurrentPrice = currentPrice?.BuyPrice ?? 0,
-                Balance = balance,
+                EOSBalance = (decimal)eosBalance,
+                TokenBalance = (decimal)tokenBalance,
                 Contract = tokenInfo.Basic?.Contract?.Pricing ?? tokenInfo.Basic?.Contract?.Transfer,
                 CurrentRaised = dbToken.Raised,
                 IsFavorite = false,

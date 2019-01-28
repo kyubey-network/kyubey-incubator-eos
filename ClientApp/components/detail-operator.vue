@@ -49,12 +49,12 @@
     </div>
     <div class="top-right-row">
       <el-input-number v-model="buyInputVal" controls-position="right" :precision="4" :step="0.0001" :min="0" style="width:274px;" placeholder="输入购买数量"></el-input-number>
-      <button type="button" class="btn btn-info buy-btn">购买</button>
-      <span class="current-state">当前单价：{{info.currentPrice}} EOS</span> <span class="current-state ">当前持有：{{info.balance}} EOS</span>
+      <button type="button" class="btn btn-info buy-btn" @click="exchange">购买</button>
+      <span class="current-state">当前单价：{{info.currentPrice}} EOS</span> <span class="current-state ">余额：{{info.eosBalance}} EOS / {{info.tokenBalance}} {{tokenId}}</span>
     </div>
     <div class="top-right-row">
       <button type="button" class="btn btn-outline-info big-btn">白皮书</button>
-      <button type="button" class="btn btn-outline-info big-btn">交易</button>
+      <button type="button" class="btn btn-outline-info big-btn" @click="">交易</button>
     </div>
   </div>
 </template>
@@ -77,6 +77,40 @@
             _this.info = res.data;
           }
         });
+      },
+      exchange() {
+        var _this = this;
+        if (_this.buyInputVal == 0) {
+          this.$message({
+            type: 'info',
+            message: '请输入有效的EOS买入数量!'
+          });
+          return;
+        }
+
+        if (_this.buyInputVal > _this.info.balance) {
+          this.$message({
+            type: 'info',
+            message: '买入的数量不能大于当前的余额'
+          });
+          return;
+        }
+
+        this.$confirm(`此操作将会花费${_this.buyInputVal}EOS, 是否继续?`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _this.exchangeSubmit();
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '交易失败'
+          });
+        });
+      },
+      exchangeSubmit: function () {
+
       }
     },
     computed: {
@@ -84,7 +118,7 @@
         if (typeof this.info.target == 'undefined' || this.info.target == 0) {
           return 0;
         }
-        return (this.info.currentRaised * 100 / this.info.target).toFixed(2);
+        return parseFloat((this.info.currentRaised * 100 / this.info.target).toFixed(2));
       }
     },
     created() {
