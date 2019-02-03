@@ -4,6 +4,7 @@ using Andoromeda.Kyubey.Incubator.Models;
 using Andoromeda.Kyubey.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,23 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
             )
         {
             var tokenRepository = await tokenRepositoryFactory.CreateAsync(request.Lang);
+
+
+            var matchTokens = db.MatchReceipts.ToList().OrderByDescending(x => x.Time).GroupBy(x => x.TokenId).Select(x => new
+            {
+                Id = x.Key,
+                Price = x.FirstOrDefault()?.UnitPrice
+            }).ToList();
+            var tokens = db.Tokens.OrderByDescending(x => x.Priority).ToList().Select(x => new
+            {
+                Symbol = x.Id,
+                Contract = tokenRepository.GetSingle(x.Id).Basic.Contract?.Transfer,
+                MaxPrice = (Math.Round((decimal)((x.NewDexAsk == 0 || x.NewDexAsk == null) ? matchTokens.FirstOrDefault(m => m.Id == x.Id)?.Price ?? 0 : x.NewDexAsk), 8) * 1.1m).ToString()
+            }).ToList();
+
+            var json = JsonConvert.SerializeObject(tokens);
+
+
             var tokenList = tokenRepository.EnumerateAll();
             var projectManifests = new GetIncubatorPaginationResponse();
             projectManifests.IncubatorList = new List<GetIncubatorListResponse>();
@@ -114,6 +132,7 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
         [ProducesResponseType(typeof(IEnumerable<GetWordingResponse>), 200)]
         public async Task<IActionResult> InfoAsync(
             string id,
+            [FromQuery] string username,
             GetBaseRequest request,
             [FromServices] KyubeyContext db,
             [FromServices] TokenRepositoryFactory tokenRepositoryFactory,
@@ -145,8 +164,8 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
             }
 
             var currentPrice = await tokenRepository.GetContractPriceAsync(id);
-            var eosBalance = await nodeApiInvoker.GetCurrencyBalanceAsync("", "eosio.token", "EOS", cancellationToken);
-            var tokenBalance = await nodeApiInvoker.GetCurrencyBalanceAsync("", tokenInfo?.Basic?.Contract?.Transfer, id, cancellationToken); ;
+            var eosBalance = await nodeApiInvoker.GetCurrencyBalanceAsync(username, "eosio.token", "EOS", cancellationToken);
+            var tokenBalance = await nodeApiInvoker.GetCurrencyBalanceAsync(username, tokenInfo?.Basic?.Contract?.Transfer, id, cancellationToken); ;
 
             var response = new GetIncubatorInfoResponse()
             {

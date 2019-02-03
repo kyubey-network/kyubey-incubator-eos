@@ -23,8 +23,8 @@ const loginStateModule = {
       }
       return false
     },
-    eosUsername: state => {
-      if (typeof state.eosLoginState.account !== 'undefined' && state.eosLoginState.account.name != null) {
+    eosUsername: (state, getters) => {
+      if (getters.isEosLogin) {
         return state.eosLoginState.account.name
       }
       return null

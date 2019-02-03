@@ -9,18 +9,21 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item ">
-            <a class="nav-link" href="#">实验室</a>
-          </li>
+          <!--<li class="nav-item ">
+            <a class="nav-link" href="#" @click="$root.toBeContinued">实验室</a>
+          </li>-->
           <router-link tag="li" class="nav-item" :to="'/list'" exact-active-class="active">
             <a class="nav-link" href="#">发现项目</a>
           </router-link>
-          <router-link tag="li" class="nav-item" :to="'/publish'" exact-active-class="active">
-            <a class="nav-link" href="#">发布项目</a>
-          </router-link>
           <li class="nav-item ">
-            <a class="nav-link" href="#">LangCode {{$root.lang}}</a>
+            <a class="nav-link" href="http://kyubey.net" target="_blank">交易所</a>
           </li>
+          <!--<li class="nav-item ">
+            <a class="nav-link" href="#" @click="$root.toBeContinued">发布项目</a>
+          </li>-->
+          <!--<router-link tag="li" class="nav-item" :to="'/publish'" exact-active-class="active">
+            <a class="nav-link" href="#">发布项目</a>
+          </router-link>-->
         </ul>
         <button type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
         <div id="navbarResponsive" class="collapse navbar-collapse">

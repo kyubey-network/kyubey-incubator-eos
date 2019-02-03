@@ -72,7 +72,7 @@
     methods: {
       async getInfo() {
         var _this = this;
-        await this.$http.get(`/api/v1/lang/${_this.$root.lang}/Incubator/info/${_this.tokenId}`).then(res => {
+        await this.$http.get(`/api/v1/lang/${_this.$root.lang}/Incubator/info/${_this.tokenId}?username=${_this.$root.eosUsername}`).then(res => {
           if (res.status == 200) {
             _this.info = res.data;
           }
@@ -120,6 +120,12 @@
         }
         return parseFloat((this.info.currentRaised * 100 / this.info.target).toFixed(2));
       }
+    },
+    watch: {
+      '$root.isEosLogin': function () {
+        var _this = this;
+        _this.getInfo();
+      },      
     },
     created() {
       this.tokenId = this.$route.params.id;

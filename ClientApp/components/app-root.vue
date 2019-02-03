@@ -18,7 +18,12 @@
       'footer-bar': Footer
     },
     methods: {
-
+      toBeContinued: function () {
+        this.$message({
+          message: 'to be continued.',
+          center: true
+        });
+      }
     },
     computed: {
       lang: function () {
@@ -35,4 +40,6 @@
 </script>
 
 <style>
+
+  #app { padding: 0; }
 </style>

@@ -87,6 +87,12 @@
         });
       }
     },
+    watch: {
+      '$root.lang': function () {
+        var _this = this;
+        _this.getWording();
+      }
+    },
     created() {
       this.tokenId = this.$route.params.id;
       this.getWording();
@@ -97,9 +103,13 @@
 <style>
   .page-bottom-left-box img { max-width: 100%; }
   .content-containner img { max-width: 100%; }
+  .content-containner h1 { font-size: 20px; }
+  .content-containner h2 { font-size: 18px; }
+  .content-containner p { font-size: 14px; }
 </style>
 
 <style scoped>
+  
   .page-bottom-left-box { max-width: 100%; }
   .token-description { margin-top: 19px; }
   .detail-right { width: 438px; display: inline-block; margin-left: 58px; }
