@@ -102,7 +102,7 @@
   .project-list:after { content: " "; display: block; height: 0; clear: left; margin-bottom: 106px; }
 
   .project-card { float: left; width: 312px; height: 393px; background: #FFFFFF; box-shadow: 0px 1px 10px 2px #ABABAB; margin-right: 36px; margin-bottom: 36px; transition: All 0.2s ease-in-out; }
-    .project-card:hover { background: #d8d8d8; cursor: pointer; transform: translate(0, -6px); }
+    .project-card:hover { cursor: pointer; transform: translate(0, -4px); }
     .project-card h1 { display: inline; font-size: 16px; font-weight: 500; }
   .project-Introduction { width: 100%; height: 51px; font-size: 12px; font-family: Helvetica; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
   .project-Avatar { float: right; width: 28px; height: 28px; border-radius: 100px; }

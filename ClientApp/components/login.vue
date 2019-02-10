@@ -49,8 +49,7 @@
           host: 'nodes.get-scatter.com',
           port: 443,
           chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-        },
-        eosScatter: null
+        }
       };
     },
     methods: {
@@ -68,15 +67,15 @@
             return;
           };
 
-          _this.eosScatter = ScatterJS.scatter;
+          var eosScatter = ScatterJS.scatter;
 
-          _this.eosScatter.getIdentity(_this.eosRequiredFields).then(() => {
+          eosScatter.getIdentity(_this.eosRequiredFields).then(() => {
 
-            const account = _this.eosScatter.identity.accounts.find(x => x.blockchain === 'eos');
+            const account = eosScatter.identity.accounts.find(x => x.blockchain === 'eos');
 
-            const eos = () => _this.eosScatter.eos(_this.eosNetwork, Eos, {});
+            const eos = () => eosScatter.eos(_this.eosNetwork, Eos, {});
 
-            _this.eosLogin({ account, loginMode: "scatter", eos, requiredFields: _this.eosRequiredFields });
+            _this.eosLogin({ account, loginMode: "scatter", eos, requiredFields: _this.eosRequiredFields, eosScatter });
             _this.isShow = false;
 
           }).catch(error => {
@@ -98,6 +97,7 @@
       }
     },
     created: function () {
+      this.scatterLoginAsync();
     },
   }
 </script>

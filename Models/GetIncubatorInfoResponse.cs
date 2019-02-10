@@ -1,3 +1,5 @@
+using System;
+
 namespace Andoromeda.Kyubey.Incubator.Models
 {
     public class GetIncubatorInfoResponse
@@ -17,6 +19,10 @@ namespace Andoromeda.Kyubey.Incubator.Models
         public int SupporterCount { get; set; }
 
         public int RemainingDay { get; set; }
+
+        public DateTime? BeginTime { get; set; }
+
+        public DateTime DeadLine { get; set; }
 
         public decimal Target { get; set; }
 

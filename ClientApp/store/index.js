@@ -32,15 +32,17 @@ const loginStateModule = {
   },
   mutations: {},
   actions: {
-    eosLogin: function (context, { account, loginMode, eos, requiredFields }) {
+    eosLogin: function (context, { account, loginMode, eos, requiredFields, eosScatter }) {
       context.state.eosLoginState = {
         account,
         loginMode,
         eos,
-        requiredFields
+        requiredFields,
+        eosScatter
       }
     },
     eosLogout: function (context) {
+      context.state.eosLoginState.eosScatter.forgetIdentity()
       context.state.eosLoginState.account = null
       context.state.eosLoginState.loginMode = null
       context.state.eosLoginState.eos = null

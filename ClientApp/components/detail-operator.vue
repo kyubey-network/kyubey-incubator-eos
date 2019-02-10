@@ -1,22 +1,57 @@
 <template>
-  <div>
+  <div v-loading="infoBoxLoading"
+       element-loading-text="拼命加载中"
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="#f6f6f6">
     <!--<div class="top-right-row">
       <h2 class="token-owner">Itzikzikzik</h2>
       <span class="top-right-tip">浙江 杭州</span>
       <span class="top-right-tip">游戏</span>
     </div>-->
-    <div class="top-right-progress top-right-row">
-      <div class="top-right-progress-target">已筹 {{info.currentRaised}} EOS</div>
-      <el-progress :text-inside="true" :stroke-width="18" :percentage="progressPercent" style="margin-top:11px;margin-bottom:12px;" color="#17a2b8"></el-progress>
-      <span class="progress-tip1">目标 {{info.target}} EOS</span>
+    <div v-if="projectState==0">
+      <div class="top-right-progress top-right-row">
+        <div class="top-right-progress-target">{{info.infoBoxLoading}} EOS</div>
+        <el-progress :text-inside="true" :stroke-width="18" :percentage="0" style="margin-top:11px;margin-bottom:12px;" color="#17a2b8"></el-progress>
+        <span class="progress-tip1">目标金额</span>
+      </div>
+      <div class="top-right-progress top-right-row">
+        <h2 class="tip">{{info.beginTime | formatDateTime}}</h2>
+        <span class="progress-tip1">开始时间</span>
+      </div>
+      <div class="top-right-progress top-right-row">
+        <h2 class="tip">0人</h2>
+        <span class="progress-tip1">点赞人数</span>
+      </div>
     </div>
-    <div class="top-right-progress top-right-row">
-      <h2 class="tip">{{info.remainingDay}}天</h2>
-      <span class="progress-tip1">剩余时间</span>
+    <div v-if="projectState==1">
+      <div class="top-right-progress top-right-row">
+        <div class="top-right-progress-target">已筹 {{info.currentRaised}} EOS</div>
+        <el-progress :text-inside="true" :stroke-width="18" :percentage="progressPercent" style="margin-top:11px;margin-bottom:12px;" color="#17a2b8"></el-progress>
+        <span class="progress-tip1">目标 {{info.target}} EOS</span>
+      </div>
+      <div class="top-right-progress top-right-row">
+        <h2 class="tip">{{info.remainingDay}}天</h2>
+        <span class="progress-tip1">剩余时间</span>
+      </div>
+      <div class="top-right-progress top-right-row">
+        <h2 class="tip">{{info.supporterCount}}人</h2>
+        <span class="progress-tip1">支持人数</span>
+      </div>
     </div>
-    <div class="top-right-progress top-right-row">
-      <h2 class="tip">{{info.supporterCount}}人</h2>
-      <span class="progress-tip1">支持人数</span>
+    <div v-if="projectState==2">
+      <div class="top-right-progress top-right-row">
+        <div class="top-right-progress-target">已筹 {{info.currentRaised}} EOS</div>
+        <el-progress :text-inside="true" :stroke-width="18" :percentage="progressPercent" style="margin-top:11px;margin-bottom:12px;" color="#17a2b8"></el-progress>
+        <span class="progress-tip1">目标 {{info.target}} EOS</span>
+      </div>
+      <div class="top-right-progress top-right-row">
+        <h2 class="tip">{{info.remainingDay}}天</h2>
+        <span class="progress-tip1">剩余时间</span>
+      </div>
+      <div class="top-right-progress top-right-row">
+        <h2 class="tip">{{info.supporterCount}}人</h2>
+        <span class="progress-tip1">支持人数</span>
+      </div>
     </div>
     <div class="top-right-box flex-center">
       <div class="box-item">
@@ -59,9 +94,12 @@
   </div>
 </template>
 <script>
+  import { formatDate } from '../common/date.js'
   export default {
     data() {
       return {
+        projectState: 0,
+        infoBoxLoading: true,
         buyInputVal: 0,
         tokenId: null,
         info: {
@@ -75,6 +113,7 @@
         await this.$http.get(`/api/v1/lang/${_this.$root.lang}/Incubator/info/${_this.tokenId}?username=${_this.$root.eosUsername}`).then(res => {
           if (res.status == 200) {
             _this.info = res.data;
+            _this.infoBoxLoading = false;
           }
         });
       },
@@ -82,7 +121,7 @@
         var _this = this;
         if (_this.buyInputVal == 0) {
           this.$message({
-            type: 'info',
+            type: 'error',
             message: '请输入有效的EOS买入数量!'
           });
           return;
@@ -113,6 +152,15 @@
 
       }
     },
+    filters: {
+      formatDateTime: function (timeStr) {
+        if (typeof timeStr == 'undefined') {
+          return null;
+        }
+        let date = new Date(timeStr);
+        return formatDate(date, 'yyyy-MM-dd hh:mm')
+      }
+    },
     computed: {
       progressPercent: function () {
         if (typeof this.info.target == 'undefined' || this.info.target == 0) {
@@ -125,7 +173,7 @@
       '$root.isEosLogin': function () {
         var _this = this;
         _this.getInfo();
-      },      
+      },
     },
     created() {
       this.tokenId = this.$route.params.id;

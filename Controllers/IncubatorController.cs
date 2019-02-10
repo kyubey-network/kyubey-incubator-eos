@@ -177,6 +177,8 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                 IsFavorite = false,
                 Protocol = tokenInfo.Basic?.Protocol,
                 RemainingDay = tokenInfo?.Incubation?.DeadLine == null ? -999 : Math.Max((tokenInfo.Incubation.DeadLine - DateTime.Now).Days, 0),
+                BeginTime = tokenInfo?.Incubation.Begin_Time,
+                DeadLine = tokenInfo?.Incubation.DeadLine ?? DateTime.MaxValue,
                 SupporterCount = supporterCount,
                 Target = tokenInfo?.Incubation?.Goal ?? 0,
                 TotalSupply = (decimal)(symbolSupply?.MaxSupply ?? 0)
