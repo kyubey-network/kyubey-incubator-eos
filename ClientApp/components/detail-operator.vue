@@ -88,17 +88,18 @@
       <span class="current-state">当前单价：{{info.currentPrice}} EOS</span> <span class="current-state ">余额：{{info.eosBalance}} EOS / {{info.tokenBalance}} {{tokenId}}</span>
     </div>
     <div class="top-right-row">
-      <button type="button" class="btn btn-outline-info big-btn">白皮书</button>
-      <button type="button" class="btn btn-outline-info big-btn" @click="">交易</button>
+      <button type="button" class="btn btn-outline-info big-btn" @click="viewWhitePaper">白皮书</button>
+      <button type="button" class="btn btn-outline-info big-btn" @click="goDex">交易</button>
     </div>
   </div>
 </template>
 <script>
   import { formatDate } from '../common/date.js'
+  import { Date } from 'core-js';
   export default {
     data() {
       return {
-        projectState: 0,
+        currentDate: new window.Date(),
         infoBoxLoading: true,
         buyInputVal: 0,
         tokenId: null,
@@ -117,8 +118,28 @@
           }
         });
       },
+      viewWhitePaper() {
+        alert('whitepaper')
+      },
+      goDex() {
+        if (this.projectState == 0) {
+          this.$message({
+            type: 'error',
+            message: '暂未开放,敬请期待!'
+          });
+          return;
+        }
+        window.open('https://www.kyubey.net/exchange/' + this.tokenId, '_blank');
+      },
       exchange() {
         var _this = this;
+        if (this.projectState == 0) {
+          this.$message({
+            type: 'error',
+            message: '暂未开放,敬请期待!'
+          });
+          return;
+        }
         if (_this.buyInputVal == 0) {
           this.$message({
             type: 'error',
@@ -157,7 +178,7 @@
         if (typeof timeStr == 'undefined') {
           return null;
         }
-        let date = new Date(timeStr);
+        let date = new window.Date(timeStr);
         return formatDate(date, 'yyyy-MM-dd hh:mm')
       }
     },
@@ -167,6 +188,18 @@
           return 0;
         }
         return parseFloat((this.info.currentRaised * 100 / this.info.target).toFixed(2));
+      },
+      projectState: function () {
+        if (typeof this.info.deadLine != 'undefined' && new window.Date(this.info.deadLine) < this.currentDate) {
+          return 2;
+        }
+        else if (typeof this.info.beginTime != 'undefined'
+          && typeof this.info.deadLine != 'undefined'
+          && new window.Date(this.info.beginTime) <= this.currentDate
+          && new window.Date(this.info.deadLine) >= this.currentDate) {
+          return 1;
+        }
+        return 0;
       }
     },
     watch: {

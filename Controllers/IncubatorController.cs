@@ -154,18 +154,22 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                       x.TokenId == dbToken.Id && !x.Account.StartsWith("eosio.")).CountAsync();
 
             GetSymbolSupplyResponse symbolSupply = null;
+            TokenContractPriceModel currentPrice = null;
+            var eosBalance = 0.0;
+            var tokenBalance = 0.0;
             try
             {
                 symbolSupply = await nodeApiInvoker.GetSymbolSupplyAsync(tokenInfo?.Basic?.Contract?.Transfer, id, cancellationToken);
+                currentPrice = await tokenRepository.GetContractPriceAsync(id);
+                eosBalance = await nodeApiInvoker.GetCurrencyBalanceAsync(username, "eosio.token", "EOS", cancellationToken);
+                tokenBalance = await nodeApiInvoker.GetCurrencyBalanceAsync(username, tokenInfo?.Basic?.Contract?.Transfer, id, cancellationToken);
             }
-            catch (ArgumentNullException ex)
+            catch (Exception ex)
             {
                 logger.LogError(ex.ToString());
             }
 
-            var currentPrice = await tokenRepository.GetContractPriceAsync(id);
-            var eosBalance = await nodeApiInvoker.GetCurrencyBalanceAsync(username, "eosio.token", "EOS", cancellationToken);
-            var tokenBalance = await nodeApiInvoker.GetCurrencyBalanceAsync(username, tokenInfo?.Basic?.Contract?.Transfer, id, cancellationToken); ;
+
 
             var response = new GetIncubatorInfoResponse()
             {
