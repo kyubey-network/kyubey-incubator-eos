@@ -8,14 +8,14 @@
           <img class="project-Avatar" :src="x.avatar" />
           <p class="project-Introduction">{{x.introduction}}</p>
           <p v-if="x.status == 'in_progress'||x.status == 'over'" class="project-blue">{{ x.targetAmount }} EOS<span class="project-percentage"> {{ x.percentage.toFixed(1) }}%</span></p>
-          <p v-else class="project-blue">{{ x.startTime }} 开始</p>
+          <p v-else class="project-blue">{{ x.startTime }} {{$t('Start')}}</p>
           <progress v-if="x.status == 'in_progress'||x.status == 'over'" class="project-Progress" :value="x.percentage" max="100"> </progress>
           <hr v-else />
-          <p class="project-gray">{{ x.numberOfSupporters }} 人已看好</p>
+          <p class="project-gray">{{ x.numberOfSupporters }} {{$t('person like it')}}</p>
         </div>
-        <div v-if="x.status == 'not_started'" class="label not-started"><span>尚未开始</span></div>
-        <div v-if="x.status == 'in_progress'" class="label in-progress"><span>正正进行</span></div>
-        <div v-if="x.status == 'over'" class="label over"><span>已经结束</span></div>
+        <div v-if="x.status == 'not_started'" class="label not-started"><span>{{$t('Not Started')}}</span></div>
+        <div v-if="x.status == 'in_progress'" class="label in-progress"><span>{{$t('Doing')}}</span></div>
+        <div v-if="x.status == 'over'" class="label over"><span>{{$t('Done')}}</span></div>
       </router-link>
     </div>
   </div>
@@ -115,7 +115,7 @@
     .project-Progress::-webkit-progress-value { background: linear-gradient(to right,#2a82b7, #3ce3ff); }
   .project-percentage { float: right; color: #bdbdbd; }
   .project-cover { max-width: 312px; }
-  .label { float: right; position: relative; right: 0px; bottom: 380px; width: 71px; height: 25px; }
+  .label { float: right; position: relative; right: 0px; bottom: 380px; width: 84px; height: 25px; }
     .label.not-started { background: #81D4C8; }
     .label.in-progress { background: #6AD0DE; }
     .label.over { background: #4189AB; }

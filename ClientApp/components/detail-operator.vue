@@ -1,6 +1,6 @@
 <template>
   <div v-loading="infoBoxLoading"
-       element-loading-text="拼命加载中"
+       element-loading-text="Loading"
        element-loading-spinner="el-icon-loading"
        element-loading-background="#f6f6f6">
     <!--<div class="top-right-row">
@@ -12,11 +12,11 @@
       <div class="top-right-progress top-right-row">
         <div class="top-right-progress-target">{{info.infoBoxLoading}} EOS</div>
         <el-progress :text-inside="true" :stroke-width="18" :percentage="0" style="margin-top:11px;margin-bottom:12px;" color="#17a2b8"></el-progress>
-        <span class="progress-tip1">目标金额</span>
+        <span class="progress-tip1">{{$t('Target')}}</span>
       </div>
       <div class="top-right-progress top-right-row">
         <h2 class="tip">{{info.beginTime | formatDateTime}}</h2>
-        <span class="progress-tip1">开始时间</span>
+        <span class="progress-tip1">{{$t('Start Time')}}</span>
       </div>
       <div class="top-right-progress top-right-row">
         <h2 class="tip">0人</h2>
@@ -25,32 +25,32 @@
     </div>
     <div v-if="projectState==1">
       <div class="top-right-progress top-right-row">
-        <div class="top-right-progress-target">已筹 {{info.currentRaised}} EOS</div>
+        <div class="top-right-progress-target">{{$t('Raised')}} {{info.currentRaised}} EOS</div>
         <el-progress :text-inside="true" :stroke-width="18" :percentage="progressPercent" style="margin-top:11px;margin-bottom:12px;" color="#17a2b8"></el-progress>
-        <span class="progress-tip1">目标 {{info.target}} EOS</span>
+        <span class="progress-tip1">{{$t('Target')}} {{info.target}} EOS</span>
       </div>
       <div class="top-right-progress top-right-row">
-        <h2 class="tip">{{info.remainingDay}}天</h2>
-        <span class="progress-tip1">剩余时间</span>
+        <h2 class="tip">{{info.remainingDay}} {{$t('Day(s)')}}</h2>
+        <span class="progress-tip1">{{$t('Remaining Days')}}</span>
       </div>
       <div class="top-right-progress top-right-row">
-        <h2 class="tip">{{info.supporterCount}}人</h2>
-        <span class="progress-tip1">支持人数</span>
+        <h2 class="tip">{{info.supporterCount}}{{$t('User(s)')}}</h2>
+        <span class="progress-tip1">{{$t('Supporters')}}</span>
       </div>
     </div>
     <div v-if="projectState==2">
       <div class="top-right-progress top-right-row">
-        <div class="top-right-progress-target">已筹 {{info.currentRaised}} EOS</div>
+        <div class="top-right-progress-target">{{$t('Raised')}} {{info.currentRaised}} EOS</div>
         <el-progress :text-inside="true" :stroke-width="18" :percentage="progressPercent" style="margin-top:11px;margin-bottom:12px;" color="#17a2b8"></el-progress>
-        <span class="progress-tip1">目标 {{info.target}} EOS</span>
+        <span class="progress-tip1">{{$t('Target')}} {{info.target}} EOS</span>
       </div>
       <div class="top-right-progress top-right-row">
-        <h2 class="tip">{{info.remainingDay}}天</h2>
-        <span class="progress-tip1">剩余时间</span>
+        <h2 class="tip">{{info.remainingDay}} {{$t('Day(s)')}}</h2>
+        <span class="progress-tip1">{{$t('Remaining Days')}}</span>
       </div>
       <div class="top-right-progress top-right-row">
-        <h2 class="tip">{{info.supporterCount}}人</h2>
-        <span class="progress-tip1">支持人数</span>
+        <h2 class="tip">{{info.supporterCount}} {{$t('User(s)')}}</h2>
+        <span class="progress-tip1">{{$t('Supporters')}}</span>
       </div>
     </div>
     <div class="top-right-box flex-center">
@@ -59,7 +59,7 @@
           {{info.totalSupply}}
         </div>
         <div class="box-item-name">
-          发行总量
+          {{$t('Total Supply')}}
         </div>
       </div>
       <div class="box-item">
@@ -67,7 +67,7 @@
           {{info.protocol}}
         </div>
         <div class="box-item-name">
-          使用协议
+          {{$t('Protocol')}}
         </div>
       </div>
       <div class="box-item">
@@ -75,7 +75,7 @@
           {{info.contract}}
         </div>
         <div class="box-item-name">
-          合约名称
+          {{$t('Contract')}}
         </div>
       </div>
       <div class="box-item">
@@ -84,17 +84,18 @@
     </div>
     <div class="top-right-row">
       <el-input-number v-model="buyInputVal" controls-position="right" :precision="4" :step="0.0001" :min="0" style="width:274px;" placeholder="输入购买数量"></el-input-number>
-      <button type="button" class="btn btn-info buy-btn" @click="exchange">购买</button>
-      <span class="current-state">当前单价：{{info.currentPrice}} EOS</span> <span class="current-state ">余额：{{info.eosBalance}} EOS / {{info.tokenBalance}} {{tokenId}}</span>
+      <button type="button" class="btn btn-info buy-btn" @click="exchange">{{$t('Buy')}}</button>
+      <span class="current-state">{{$t('Current Price')}}：{{info.currentPrice}} EOS</span> <span class="current-state ">{{$t('Balance')}}：{{info.eosBalance}} EOS / {{info.tokenBalance}} {{tokenId}}</span>
     </div>
     <div class="top-right-row">
-      <button type="button" class="btn btn-outline-info big-btn" @click="viewWhitePaper">白皮书</button>
-      <button type="button" class="btn btn-outline-info big-btn" @click="goDex">交易</button>
+      <button type="button" class="btn btn-outline-info big-btn" @click="viewWhitePaper">{{$t('WhitePaper')}}</button>
+      <button type="button" class="btn btn-outline-info big-btn" @click="goDex">{{$t('Exchange')}}</button>
     </div>
   </div>
 </template>
 <script>
   import { formatDate } from '../common/date.js'
+  import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
   import { Date } from 'core-js';
   export default {
     data() {
@@ -133,6 +134,14 @@
       },
       exchange() {
         var _this = this;
+        if (!this.isEosLogin) {
+          this.$message({
+            type: 'error',
+            message: '请登录'
+          });
+          return;
+        }
+
         if (this.projectState == 0) {
           this.$message({
             type: 'error',
@@ -183,6 +192,9 @@
       }
     },
     computed: {
+      ...mapGetters({
+        isEosLogin: 'loginState/isEosLogin'
+      }),
       progressPercent: function () {
         if (typeof this.info.target == 'undefined' || this.info.target == 0) {
           return 0;

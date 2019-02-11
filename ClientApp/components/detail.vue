@@ -22,8 +22,8 @@
       <div class="row container content-containner">
         <div class="detail-left">
           <ul class="detail-nav">
-            <li v-bind:class="{ active: currentNav=='detail' }" @click="currentNav='detail'"><a>项目介绍</a></li>
-            <li v-bind:class="{ active: currentNav=='update' }" @click="currentNav='update'"><a>更新记录</a></li>
+            <li v-bind:class="{ active: currentNav=='detail' }" @click="currentNav='detail'"><a>{{$t('Detail')}}</a></li>
+            <li v-bind:class="{ active: currentNav=='update' }" @click="currentNav='update'"><a>{{$t('Recent updates')}}</a></li>
             <!--<li v-bind:class="{ active: currentNav=='comments' }" @click="currentNav='comments'"><a>用户评论</a></li>-->
           </ul>
           <div v-if="currentNav=='detail'" class="page-bottom-left-box" v-html="marked(wording.detail)">
@@ -41,14 +41,9 @@
         </div>
         <div class="detail-right">
           <div class="warning-tip-title">
-            风险提示
+            {{$t('Risk warning')}}
           </div>
-          <div class="warning-tip-content">
-            1. 您参与众筹是支持将创意变为现实的过程，而不是直接的商品交易，因此存在一定风险。请您根据自己的判断选择、支持众筹项目。<br />
-            2. 众筹存在于发起人与支持者之间，摩点网作为第三方平台，只提供网络空间、技术支持等服务。众筹的回报产品和承诺由发起人提供和作出，摩点网不参与和担保众筹项目的具体运作。<br />
-            3. 众筹项目的回报发放及其他后续服务事项均由发起人负责。如果发生发起人无法发放回报、延迟发放回报、不提供回报后续服务等情形，您需要直接和发起人协商解决，摩点网对此不承担任何责任。<br />
-            4. 由于发起人能力和经验不足、市场风险、法律风险等各种因素，众筹可能失败。对于在众筹期限届满前失败的项目，您支持项目的款项会全部原路退还给您；对于众筹成功的项目，支持者不能通过摩点平台申请退款，若此时支持者因任何原因希望退款，需直接与发起者协商，若发 起者同意退款，需直接向支持者退回款项，摩点不会从可结算款项中扣除该部分退款金额。您对项目发起人的无偿支持以及额外打赏，一旦众筹成功将不予退款，但众筹失败的情况除外…
-          </div>
+          <div class="warning-tip-content" v-html="$t('Risk warning content')"></div>
         </div>
       </div>
     </div>

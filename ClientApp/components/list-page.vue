@@ -1,18 +1,18 @@
 <template>
   <div class="top-slider">
     <div class="container header">
-      <h1 class="mr-3">发现项目</h1>
-      <h2>共{{ total }}个项目</h2>
+      <h1 class="mr-3">{{$t('Find Project')}}</h1>
+      <h2>{{$t('total_project',{total:total})}}</h2>
       <div class="header-float">
         <select v-model="status" class=" form-control d-inline-block">
-          <option value="all">全部</option>
-          <option value="not_started">尚未开始</option>
-          <option value="in_progress">正在进行</option>
-          <option value="over">已经结束</option>
+          <option value="all">{{$t('All')}}</option>
+          <option value="not_started">{{$t('Not Started')}}</option>
+          <option value="in_progress">{{$t('Doing')}}</option>
+          <option value="over">{{$t('Done')}}</option>
         </select>
         <select v-model="ranking" class="header-right form-control d-inline-block">
-          <option value="latest">最新上线</option>
-          <option value="money">金额最高</option>
+          <option value="latest">{{$t('By Time')}}</option>
+          <option value="money">{{$t('By Amount')}}</option>
         </select>
       </div>
     </div>

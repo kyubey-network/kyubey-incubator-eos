@@ -35,9 +35,9 @@
       </a>
     </div>
     <div class="container home-title page-containner">
-      <h1>发现项目</h1>
+      <h1>{{$t('Find Project')}}</h1>
       <router-link :to="'/list'">
-        查看更多 >>
+        {{$t('More')}} >>
       </router-link>
     </div>
     <incubatorList skip="0" take="12" ranking="money" status="all"></incubatorList>
