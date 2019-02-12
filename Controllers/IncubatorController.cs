@@ -169,7 +169,7 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                 logger.LogError(ex.ToString());
             }
 
-
+            var whitepaperPath = tokenRepository.GetWhitePaper(id, request.Lang);
 
             var response = new GetIncubatorInfoResponse()
             {
@@ -185,7 +185,8 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                 DeadLine = tokenInfo?.Incubation.DeadLine ?? DateTime.MaxValue,
                 SupporterCount = supporterCount,
                 Target = tokenInfo?.Incubation?.Goal ?? 0,
-                TotalSupply = (decimal)(symbolSupply?.MaxSupply ?? 0)
+                TotalSupply = (decimal)(symbolSupply?.MaxSupply ?? 0),
+                WhitePaper = whitepaperPath == null ? null : "/token_assets/" + whitepaperPath
             };
 
             return ApiResult(response);

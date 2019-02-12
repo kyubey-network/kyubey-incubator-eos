@@ -120,7 +120,14 @@
         });
       },
       viewWhitePaper() {
-        alert('whitepaper')
+        if (this.info.whitePaper == null) {
+          this.$message({
+            type: 'error',
+            message: '敬请期待'
+          });
+          return;
+        }
+        window.open(location.protocol + "//" + location.host + "//" + this.info.whitePaper, '_blank');
       },
       goDex() {
         if (this.projectState == 0) {

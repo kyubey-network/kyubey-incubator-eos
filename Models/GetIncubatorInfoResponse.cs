@@ -29,5 +29,7 @@ namespace Andoromeda.Kyubey.Incubator.Models
         public string Contract { get; set; }
 
         public string Protocol { get; set; }
+
+        public string WhitePaper { get; set; }
     }
 }

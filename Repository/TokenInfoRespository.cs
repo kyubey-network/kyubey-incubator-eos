@@ -124,6 +124,27 @@ namespace Andoromeda.Kyubey.Incubator.Repository
             };
         }
 
+        public string GetWhitePaper(string tokenId, string cultureStr)
+        {
+            var sliderFolderPath = Path.Combine(tokenFolderAbsolutePath, tokenId, "whitepaper");
+            if (!Directory.Exists(sliderFolderPath))
+            {
+                return null;
+            }
+
+            var availablePaths = GlobalizationFileFinder.GetCultureFiles(sliderFolderPath, cultureStr, ".pdf").ToList();
+
+            if (availablePaths.Count >= 1)
+            {
+                var path = availablePaths.FirstOrDefault();
+                Uri absolutePath = new Uri(path);
+                Uri folderPath = new Uri(tokenFolderAbsolutePath + "/");
+                string relativePath = folderPath.MakeRelativeUri(absolutePath).ToString();
+                return relativePath;
+            };
+            return null;
+        }
+
         public List<TokenIncubatorUpdateModel> GetTokenIncubatorUpdates(string tokenId, string cultureStr)
         {
             var folderPath = Path.Combine(tokenFolderAbsolutePath, tokenId, "updates");
