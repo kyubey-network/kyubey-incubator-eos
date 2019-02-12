@@ -18,17 +18,9 @@ namespace Andoromeda.Kyubey.Incubator.Jobs
                 "kyubey-network", "token-list", "master",
                 Path.Combine(config["RepositoryStore"], "token-list")).Wait();
             }
-            catch (AggregateException ex)
+            catch (Exception ex)
             {
-                ex.Flatten().Handle((x) =>
-                {
-                    if (x is IOException)
-                    {
-                        logger.LogError(x.ToString());
-                        return true;
-                    }
-                    return false;
-                });
+                logger.LogError(ex.ToString());
             }
         }
     }

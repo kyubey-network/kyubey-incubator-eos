@@ -10,7 +10,7 @@
   import $ from 'jquery'
   import NavBar from './nav-bar'
   import Footer from './footer'
-import { debug } from 'util';
+  import { mapActions, mapState, mapMutations, mapGetters } from 'vuex'
 
   export default {
     components: {
@@ -18,11 +18,21 @@ import { debug } from 'util';
       'footer-bar': Footer
     },
     methods: {
+      toBeContinued: function () {
+        this.$message({
+          message: 'to be continued.',
+          center: true
+        });
+      }
     },
     computed: {
       lang: function () {
         return this.$i18n.locale;
-      }
+      },
+      ...mapGetters({
+        isEosLogin: 'loginState/isEosLogin',
+        eosUsername: 'loginState/eosUsername',
+      }),
     },
     created() {
     }
@@ -30,4 +40,6 @@ import { debug } from 'util';
 </script>
 
 <style>
+
+  #app { padding: 0; }
 </style>

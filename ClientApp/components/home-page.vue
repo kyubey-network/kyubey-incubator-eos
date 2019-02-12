@@ -34,21 +34,24 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-    <div class="container home-title">
-      <h1>发现项目</h1>
-      <router-link  :to="'/list'">
-        查看更多 >>
+    <div class="container home-title page-containner">
+      <h1>{{$t('Find Project')}}</h1>
+      <router-link :to="'/list'">
+        {{$t('More')}} >>
       </router-link>
     </div>
     <incubatorList skip="0" take="12" ranking="money" status="all"></incubatorList>
+    <toTop speed="80" position="50"></toTop>
   </div>
 </template>
 
 <script>
   import incubatorList from './incubator-list.vue'
+  import toTop from './to-top.vue'
   export default {
     components: {
-      incubatorList
+      incubatorList,
+      toTop
     },
     data() {
       return {
@@ -68,45 +71,13 @@
 </script>
 
 <style>
-  .home-title {
-    margin-top: 48px;
-    margin-bottom: 32px;
-  }
+  .home-title { margin-top: 48px; margin-bottom: 32px; }
+    .home-title h1 { display: inline; font-size: 24px; font-weight: 500; }
+    .home-title a { font-size: 14px; float: right; padding-top: 10px; font-weight: 400; margin-right: 36px; }
 
-    .home-title h1 {
-      display: inline;
-      font-size: 24px;
-      font-weight: 500;
-    }
-
-    .home-title a {
-      font-size: 14px;
-      float: right;
-      padding-top: 10px;
-      font-weight: 400;
-    }
-
-  .carousel-inner {
-    width: 100%;
-    max-height: 350px !important;
-  }
-  .carousel img {
-    max-height: 350px;
-    margin: 0 auto;
-  }
-  .carousel-content {
-    z-index: 100;
-    position: absolute;
-    top: 0;
-    right: 15%;
-    bottom: 20px;
-    left: 15%;
-    padding-bottom: 20px;
-  }
-  .carousel-item {
-    text-align: center;
-  }
-  #homeSlider {
-    margin-top: 60px;
-  }
+  .carousel-inner { width: 100%; max-height: 350px !important; }
+  .carousel img { max-height: 350px; margin: 0 auto; }
+  .carousel-content { position: absolute; top: 0; right: 15%; bottom: 20px; left: 15%; padding-bottom: 20px; }
+  .carousel-item { text-align: center; }
+  #homeSlider { margin-top: 60px; }
 </style>

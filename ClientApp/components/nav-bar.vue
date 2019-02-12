@@ -9,18 +9,21 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item ">
-            <a class="nav-link" href="#">实验室</a>
-          </li>
+          <!--<li class="nav-item ">
+            <a class="nav-link" href="#" @click="$root.toBeContinued">实验室</a>
+          </li>-->
           <router-link tag="li" class="nav-item" :to="'/list'" exact-active-class="active">
-            <a class="nav-link" href="#">发现项目</a>
-          </router-link>
-          <router-link tag="li" class="nav-item" :to="'/publish'" exact-active-class="active">
-            <a class="nav-link" href="#">发布项目</a>
+            <a class="nav-link" href="#">{{$t('Find Project')}}</a>
           </router-link>
           <li class="nav-item ">
-            <a class="nav-link" href="#">LangCode {{$root.lang}}</a>
+            <a class="nav-link" href="http://kyubey.net" target="_blank">{{$t('Dex')}}</a>
           </li>
+          <!--<li class="nav-item ">
+            <a class="nav-link" href="#" @click="$root.toBeContinued">发布项目</a>
+          </li>-->
+          <!--<router-link tag="li" class="nav-item" :to="'/publish'" exact-active-class="active">
+            <a class="nav-link" href="#">发布项目</a>
+          </router-link>-->
         </ul>
         <button type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span class="navbar-toggler-icon"></span></button>
         <div id="navbarResponsive" class="collapse navbar-collapse">
@@ -30,16 +33,16 @@
             </li>
           </ul>
           <ul class="navbar-nav ">
-            <li class="nav-item" v-if="!isEosLogin">
-              <a class="nav-link" @click="showLoginModal">登录</a>
+            <li class="nav-item" v-if="!$root.isEosLogin">
+              <a class="nav-link" @click="showLoginModal">{{$t('Login')}}</a>
             </li>
-            <li class="nav-item" v-if="isEosLogin">
-              <span class="navbar-text font-weight-bold">{{$t('hi')}}, {{usernameDisplay}}</span>
+            <li class="nav-item" v-if="$root.isEosLogin">
+              <span class="navbar-text font-weight-bold">{{$t('hi')}}, {{$root.eosUsername}}</span>
             </li>
-            <li class="nav-item" v-if="isEosLogin">
+            <li class="nav-item" v-if="$root.isEosLogin">
               <a class="nav-link" v-on:click="switchAccount">{{"切换账号"}}</a>
             </li>
-            <li class="nav-item" v-if="isEosLogin">
+            <li class="nav-item" v-if="$root.isEosLogin">
               <a class="nav-link" v-on:click="eosLogout">{{"退出"}}</a>
             </li>
             <li class="nav-item dropdown">
@@ -91,18 +94,9 @@
       }
     },
     computed: {
-      ...mapState({
-        usernameDisplay: state => {
-          var _this = this;
-          if (typeof state.loginState.eosLoginState.account !== 'undefined' && state.loginState.eosLoginState.account.name != null) {
-            return state.loginState.eosLoginState.account.name
-          }
-          return null;
-        }
-      }),
       ...mapGetters({
         isEosLogin: 'loginState/isEosLogin'
-      })
+      }),
     },
     created() {
     }

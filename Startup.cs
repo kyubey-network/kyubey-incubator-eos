@@ -45,6 +45,8 @@ namespace Andoromeda.Kyubey.Incubator
                     .AllowAnyHeader()
             ));
 
+            services.AddNodeServices(x => x.ProjectPath = "./Node");
+
             services.AddEosNodeApiInvoker();
 
             services.AddTimedJob();

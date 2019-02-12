@@ -3,14 +3,14 @@
     <div class="container  footer-top">
       <div class="d-flex">
         <div class=" footer-leftbox ">
-          <p class="footer-header">关于</p>
-          <router-link tag="a" :to="'/about-us'" class="footer-subheader bottom-hyperlink" >关于我们</router-link>
-          <p class="footer-subheader">加入我们</p>
+          <p class="footer-header">{{$t('About')}}</p>
+          <router-link tag="a" :to="'/about-us'" class="footer-subheader bottom-hyperlink">{{$t('About us')}}</router-link>
+          <p class="footer-subheader">{{$t('Join us')}}</p>
         </div>
         <div class=" footer-leftbox ">
-          <p class="footer-header">帮助</p>
-          <p class="footer-subheader">常见问题</p>
-          <p class="footer-subheader">项目发起指南</p>
+          <p class="footer-header">{{$t('Help')}}</p>
+          <p class="footer-subheader">{{$t('Common problems')}}</p>
+          <p class="footer-subheader">{{$t('How to set up a project?')}}</p>
         </div>
         <div class="ml-auto footer-rightbox">
           <p class="footer-header">订阅我们</p>
