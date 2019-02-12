@@ -5,7 +5,7 @@
         <div class=" footer-leftbox ">
           <p class="footer-header">{{$t('About')}}</p>
           <router-link tag="a" :to="'/about-us'" class="footer-subheader bottom-hyperlink">{{$t('About us')}}</router-link>
-          <p class="footer-subheader">{{$t('Join us')}}</p>
+          <router-link tag="a" :to="'/join-us'" class="footer-subheader bottom-hyperlink">{{$t('Join us')}}</router-link>
         </div>
         <div class=" footer-leftbox ">
           <p class="footer-header">{{$t('Help')}}</p>
@@ -45,6 +45,7 @@
 <style scoped>
   .bottom-hyperlink {
     color: black;
+    display:block;
   }
   .bottom-hyperlink:hover {
     text-decoration: underline;
