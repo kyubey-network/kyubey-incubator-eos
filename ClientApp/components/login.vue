@@ -75,10 +75,12 @@
         var _this = this;
         ScatterJS.scatter.connect('kyubey-eos').then(connected => {
           if (!connected) {
-            this.$message({
-              message: '请安装Scatter钱包',
-              type: 'error'
-            });
+            if (this.isShow) {
+              this.$message({
+                message: '请安装Scatter钱包',
+                type: 'error'
+              });
+            }
             return;
           };
 

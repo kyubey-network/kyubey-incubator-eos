@@ -126,7 +126,7 @@
         if (this.info.whitePaper == null) {
           this.$message({
             type: 'error',
-            message: '敬请期待'
+            message: '暂未上传白皮书'
           });
           return;
         }
