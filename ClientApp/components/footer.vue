@@ -9,13 +9,13 @@
         </div>
         <div class=" footer-leftbox ">
           <p class="footer-header">{{$t('Help')}}</p>
-          <p class="footer-subheader">{{$t('Common problems')}}</p>
-          <p class="footer-subheader">{{$t('How to set up a project?')}}</p>
+          <p class="footer-subheader"><a href="#" class="bottom-hyperlink">{{$t('Common problems')}}</a></p>
+          <p class="footer-subheader"><a href="#" class="bottom-hyperlink">{{$t('How to set up a project?')}}</a></p>
         </div>
         <div class="ml-auto footer-rightbox">
           <p class="footer-header">{{$t('Website subscription')}}</p>
           <p class="footer-subheader">{{$t('Subscribe.Text')}}</p>
-          <p class="footer-subheader"><input type="text" class="email-input" v-model="inputVal" placeholder="Email Address" /></p>
+          <p class="footer-subheader"><input type="text" class="email-input" v-model="inputVal" v-bind:placeholder="$t('Email Address')" /></p>
           <p class="footer-subheader"><button class="email-button" @click="subscribe">{{$t('Subscribe')}}</button></p>
         </div>
       </div>
@@ -43,16 +43,17 @@
     },
     methods: {
       subscribe: function () {
+        var _this = this;
         if (this.inputVal == null) {
           this.$message({
             type: 'error',
-            message: '请输入你的Email地址'
+            message: _this.$t('Please enter your email address')
           });
           return;
         }
         this.$message({
           type: 'success',
-          message: '订阅成功'
+          message: _this.$t('Subscribe succeed')
         });
       }
     },

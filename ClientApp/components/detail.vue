@@ -47,7 +47,7 @@
         </div>
       </div>
     </div>
-    <toTop speed="80" position="50"></toTop>
+    <toTop speed="160" position="50"></toTop>
   </div>
 
 </template>

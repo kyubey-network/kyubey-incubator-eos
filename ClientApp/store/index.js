@@ -42,11 +42,14 @@ const loginStateModule = {
       }
     },
     eosLogout: function (context) {
-      context.state.eosLoginState.eosScatter.forgetIdentity()
+      if (context.state.eosLoginState.loginMode === 'scatter') {
+        context.state.eosLoginState.eosScatter.forgetIdentity()
+        context.state.eosLoginState.eos = null
+        context.state.eosLoginState.requiredFields = null
+      }
+
       context.state.eosLoginState.account = null
       context.state.eosLoginState.loginMode = null
-      context.state.eosLoginState.eos = null
-      context.state.eosLoginState.requiredFields = null
     }
   }
 }

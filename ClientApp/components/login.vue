@@ -37,7 +37,6 @@
   import QRCode from 'qrcodejs2';
   import ScatterEOS from 'scatterjs-plugin-eosjs';
   import Eos from 'eosjs'
-  import { debug } from 'util';
   import { mapActions, mapState, mapMutations } from 'vuex'
   const signalR = require("@aspnet/signalr");
 
@@ -77,7 +76,7 @@
           if (!connected) {
             if (this.isShow) {
               this.$message({
-                message: '请安装Scatter钱包',
+                message: _this.$t('Please install a Scatter wallet'),
                 type: 'error'
               });
             }

@@ -69,5 +69,9 @@
   "prompt": "提示",
   "confirm": "确定",
   "cancel": "取消",
-  "exchange failed": "交易失败"
+  "exchange failed": "交易失败",
+  "Please install a Scatter wallet": "请安装Scatter钱包",
+  "Please enter your email address": "请输入你的Email地址",
+  "Subscribe succeed": "订阅成功",
+  "Email Address": "邮件地址"
 }
