@@ -5,27 +5,27 @@
         <div class="row">
           <div class="col-5 d-flex flex-column align-items-center justify-content-between">
             <div class="plugin-login">
-              <img src="/img/scatter_logo.png" alt="scatter_logo"> <button type="button" class="btn btn-outline-info mb-3" @click="scatterLoginAsync">Scatter登录</button>
+              <img src="/img/scatter_logo.png" alt="scatter_logo"> <button type="button" class="btn btn-outline-info mb-3" @click="scatterLoginAsync">{{$t('Scatter login')}}</button>
             </div>
-            <p class="text-center">Scatter是一款EOS钱包， 请您确定已经安装Scatter. 参考：https://get-scatter.com</p>
+            <p class="text-center">{{$t('Scatter.Text')}}</p>
           </div>
           <div class="col-2 d-flex flex-column align-items-center justify-content-between">
             <span class="my-line"></span>
-            <span>或</span>
+            <span>{{$t('or')}}</span>
             <span class="my-line"></span>
           </div>
           <div class="col-5 d-flex flex-column align-items-center justify-content-between">
-            <p class="text-center mb-3">手机钱包扫码登录</p>
+            <p class="text-center mb-3">{{$t('QrCode.Tip1')}}</p>
             <div id="loginQRCode" class="qrcode"></div>
             <div class="qrcode-mask d-flex flex-column align-items-center justify-content-center" v-if="!qrcodeIsValid">
-              <p>已过期</p>
-              <a @click="refreshLoginQRCode">刷新</a>
+              <p>{{$t('QR code is expired')}}</p>
+              <a @click="refreshLoginQRCode">{{$t('Refresh')}}</a>
             </div>
             <div class="d-flex align-items-center justify-content-end login-app-icon-container">
-              <img class="logo" src="/img/wallet/pocket_logo.png" alt="pocket_logo" title="版本号至少为 Android 0.4.6、iOS 0.4.4">
-              <img class="logo" src="/img/wallet/math_logo.png" alt="math_logo" title="版本号至少为 1.6.5">
-              <img class="logo" src="/img/wallet/meetone_logo.png" alt="meetone_logo" title="版本号至少为 1.1.8">
-            </div> <p class="text-center">请确保手机钱包为支持扫码授权的版本</p>
+              <img class="logo" src="/img/wallet/pocket_logo.png" alt="pocket_logo" v-bind:title="$t('tp.tip')">
+              <img class="logo" src="/img/wallet/math_logo.png" alt="math_logo" v-bind:title="$t('math.tip')">
+              <img class="logo" src="/img/wallet/meetone_logo.png" alt="meetone_logo" v-bind:title="$t('meetone.tip')">
+            </div> <p class="text-center">{{$t('QrCode.Tip2')}}</p>
           </div>
         </div>
       </div>

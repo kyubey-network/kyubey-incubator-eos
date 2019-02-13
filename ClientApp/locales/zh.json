@@ -47,5 +47,15 @@
   "Like users": "点赞人数",
   "Who are we?": "我们是谁？",
   "Contact us text 1": "如果您在使用KyubeyDex时遇到问题需要帮助，或有建议想要提出，请发送邮件至邮箱：",
-  "Contact us text 2": "我们会尽快为您进行处理。 感谢您对我们的支持！"
+  "Contact us text 2": "我们会尽快为您进行处理。 感谢您对我们的支持！",
+  "Scatter login": "Scatter 登录",
+  "Scatter.Text": "Scatter是一款EOS钱包， 请您确定已经安装Scatter. 参考：https://get-scatter.com",
+  "or": "或",
+  "QrCode.Tip1": "手机钱包扫码登录",
+  "QrCode.Tip2": "请确保手机钱包为支持扫码授权的版本",
+  "Refresh": "刷新",
+  "QR code is expired": "二维码已经过期",
+  "tp.tip": "版本号至少为 Android 0.4.6、iOS 0.4.4",
+  "math.tip": "版本号至少为 1.6.5",
+  "meetone.tip": "版本号至少为 1.1.8"
 }

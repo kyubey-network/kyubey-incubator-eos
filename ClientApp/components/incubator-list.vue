@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <div class="project-list">
+    <div class="project-list"
+         v-loading="listLoading"
+         element-loading-text="Loading"
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="#f6f6f6">
       <router-link v-for="x in list" class="project-card" tag="div" :to="x.url">
         <div class="incubation-card-img" :style="{background: 'url(' + x.cover + ')'}"></div>
         <div class="project-description">
@@ -17,6 +21,7 @@
         <div v-if="x.status == 'in_progress'" class="label in-progress"><span>{{$t('Doing')}}</span></div>
         <div v-if="x.status == 'over'" class="label over"><span>{{$t('Done')}}</span></div>
       </router-link>
+      <div class="clearfix"></div>
     </div>
   </div>
 </template>
@@ -38,6 +43,7 @@
         lang: 'zh',
         myDate: null,
         total: 0,
+        listLoading: true
       }
     },
 
@@ -51,6 +57,7 @@
       },
 
       async readData() {
+        this.listLoading = true;
         this.list = [];
         if (this.$root.lang == "zh_tw") {
           this.lang = "zh-Hant";
@@ -78,8 +85,9 @@
                 item.percentage = 0;
               }
               item.startTime = self.getTime(item.startTime);
-              self.list.push(item);
+              self.list.push(item);              
             }
+            this.listLoading = false;
           });
       }
     },
@@ -99,7 +107,7 @@
 
 <style>
   .container { max-width: 1080px; }
-  .project-list:after { content: " "; display: block; height: 0; clear: left; margin-bottom: 106px; }
+  .project-list { min-height: 482px; }
 
   .project-card { float: left; width: 312px; height: 393px; background: #FFFFFF; box-shadow: 0px 1px 10px 2px #ABABAB; margin-right: 36px; margin-bottom: 36px; transition: All 0.2s ease-in-out; }
     .project-card:hover { cursor: pointer; transform: translate(0, -4px); }
