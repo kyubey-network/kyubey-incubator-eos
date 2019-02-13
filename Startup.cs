@@ -1,3 +1,4 @@
+using Andoromeda.Kyubey.Incubator.Hubs;
 using Andoromeda.Kyubey.Incubator.Middlewares;
 using Andoromeda.Kyubey.Models;
 using Microsoft.AspNetCore.Builder;
@@ -54,10 +55,10 @@ namespace Andoromeda.Kyubey.Incubator
             services.AddTimedJob();
 
             services.AddTokenRepositoryactory();
-            services.AddSignalR();
-
-            // Simple example with dependency injection for a data provider.
-            services.AddSingleton<Providers.IWeatherProvider, Providers.WeatherProviderFake>();
+            services.AddSignalR(hubOptions =>
+            {
+                hubOptions.EnableDetailedErrors = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,6 +81,11 @@ namespace Andoromeda.Kyubey.Incubator
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kyubey Incubator"));
 
             app.UseIncubatorStaticFiles(env, Configuration);
+
+            app.UseSignalR(x =>
+            {
+                x.MapHub<SimpleWalletHub>("/signalr/simplewallet");
+            });
 
             app.UseMvc(routes =>
             {

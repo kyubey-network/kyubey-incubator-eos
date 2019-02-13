@@ -49,7 +49,7 @@
       return {
         isShow: false,
         qrcodeIsValid: false,
-        qrcodeTimer:null,
+        qrcodeTimer: null,
         currentHost: location.protocol + "//" + location.host,
         eosLoginUuid: null,
         eosNetwork: {
@@ -153,6 +153,7 @@
       },
       initSignalR: function () {
         var self = this;
+
         self.signalr.simplewallet.connection = new signalR.HubConnectionBuilder()
           .configureLogging(signalR.LogLevel.Trace)
           .withUrl('/signalr/simplewallet', {})
@@ -161,16 +162,18 @@
 
         // TODO: Receiving some signals for updating query view.
         self.signalr.simplewallet.connection.on('simpleWalletLoginSucceeded', (account) => {
-          self.account = {
+          var _this = this;
+          var accountObject = {
             name: account
           };
-          self.loginMode = 'Simple Wallet';
-          self.isShow = false;
+
+          _this.eosLogin({ account: accountObject, loginMode: 'Simple Wallet', eos: null, requiredFields: null, eosScatter: null });
+          _this.isShow = false;
         });
 
         self.signalr.simplewallet.connection.start().then(function () {
-          self.uuid = self.generateUUID();
-          return self.signalr.simplewallet.connection.invoke('bindUUID', self.uuid);
+          self.eosLoginUuid = self.generateUUID();
+          return self.signalr.simplewallet.connection.invoke('bindUUID', self.eosLoginUuid);
         });
 
         self.signalr.simplewallet.connection.onclose(async () => {
@@ -181,7 +184,7 @@
         var self = this;
         try {
           await self.signalr.simplewallet.connection.start();
-          self.signalr.simplewallet.connection.invoke('bindUUID', self.uuid);
+          self.signalr.simplewallet.connection.invoke('bindUUID', self.eosLoginUuid);
           console.log('reconnected');
         } catch (err) {
           console.warn(err);
@@ -209,8 +212,7 @@
     },
     created: function () {
       this.scatterLoginAsync();
-      this.eosLoginUuid = this.generateUUID();
-
+      this.initSignalR();
     },
   }
 </script>
