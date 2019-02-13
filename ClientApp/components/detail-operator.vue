@@ -96,7 +96,6 @@
 <script>
   import { formatDate } from '../common/date.js'
   import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
-  import { Date } from 'core-js';
   export default {
     data() {
       return {
@@ -202,7 +201,6 @@
         var contractAccount = this.info.contract;
         var amount = this.buyInputVal;
         var buyMemo = this.info.buyMemo;
-        buyMemo = "buy";
 
         this.scatterBuy(contractAccount, amount, buyMemo);
       },

@@ -39,6 +39,7 @@
   import Eos from 'eosjs'
   import { debug } from 'util';
   import { mapActions, mapState, mapMutations } from 'vuex'
+  const signalR = require("@aspnet/signalr");
 
   ScatterJS.plugins(new ScatterEOS());
 
@@ -57,7 +58,13 @@
           host: 'nodes.get-scatter.com',
           port: 443,
           chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-        }
+        },
+        signalr: {
+          simplewallet: {
+            connection: null,
+            listeners: []
+          }
+        },
       };
     },
     methods: {
@@ -202,7 +209,7 @@
     },
     created: function () {
       this.scatterLoginAsync();
-
+      this.eosLoginUuid = this.generateUUID();
 
     },
   }

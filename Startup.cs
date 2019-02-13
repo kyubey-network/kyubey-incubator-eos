@@ -47,12 +47,14 @@ namespace Andoromeda.Kyubey.Incubator
 
             services.AddNodeServices(x => x.ProjectPath = "./Node");
 
+            services.AddEosSignatureValidator();
+
             services.AddEosNodeApiInvoker();
 
             services.AddTimedJob();
 
             services.AddTokenRepositoryactory();
-
+            services.AddSignalR();
 
             // Simple example with dependency injection for a data provider.
             services.AddSingleton<Providers.IWeatherProvider, Providers.WeatherProviderFake>();
