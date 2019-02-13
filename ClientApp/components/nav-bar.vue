@@ -40,10 +40,10 @@
               <span class="navbar-text font-weight-bold">{{$t('hi')}}, {{$root.eosUsername}}</span>
             </li>
             <li class="nav-item" v-if="$root.isEosLogin">
-              <a class="nav-link" v-on:click="switchAccount">{{"切换账号"}}</a>
+              <a class="nav-link" v-on:click="switchAccount">{{$t('Switch Account')}}</a>
             </li>
             <li class="nav-item" v-if="$root.isEosLogin">
-              <a class="nav-link" v-on:click="eosLogout">{{"退出"}}</a>
+              <a class="nav-link" v-on:click="eosLogout">{{$t('Logout')}}</a>
             </li>
             <li class="nav-item dropdown">
               <a href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">
@@ -66,7 +66,6 @@
 <script>
   import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
   import LoginModal from './login'
-  import { debug } from 'util';
   export default {
     components: {
       'loginModal': LoginModal,

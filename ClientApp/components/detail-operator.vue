@@ -20,7 +20,7 @@
       </div>
       <div class="top-right-progress top-right-row">
         <h2 class="tip">0人</h2>
-        <span class="progress-tip1">点赞人数</span>
+        <span class="progress-tip1">{{$t('Like users')}}</span>
       </div>
     </div>
     <div v-if="projectState==1">
@@ -85,7 +85,7 @@
     <div class="top-right-row">
       <el-input-number v-model="buyInputVal" controls-position="right" :precision="4" :step="0.0001" :min="0" style="width:274px;" placeholder="输入购买数量"></el-input-number>
       <button type="button" class="btn btn-info buy-btn" @click="exchange">{{$t('Buy')}}</button>
-      <span class="current-state">{{$t('Current Price')}}：{{info.currentPrice}} EOS</span> <span class="current-state ">{{$t('Balance')}}：{{info.eosBalance}} EOS / {{info.tokenBalance}} {{tokenId}}</span>
+      <span class="current-state">{{$t('Price')}}：{{info.currentPrice}} EOS</span> <span class="current-state ">{{$t('Balance')}}：{{info.eosBalance}} EOS / {{info.tokenBalance}} {{tokenId}}</span><a @click="refresh"><icon class="ml-1 refreash-btn" icon="sync-alt" /></a>
     </div>
     <div class="top-right-row">
       <button type="button" class="btn btn-outline-info big-btn" @click="viewWhitePaper">{{$t('WhitePaper')}}</button>
@@ -119,6 +119,10 @@
           }
         });
       },
+      refresh() {
+        this.infoBoxLoading = true;
+        this.getInfo();
+      },
       viewWhitePaper() {
         if (this.info.whitePaper == null) {
           this.$message({
@@ -141,10 +145,10 @@
       },
       exchange() {
         var _this = this;
-        if (!this.isEosLogin) {
+        if (this.projectState == 2) {
           this.$message({
             type: 'error',
-            message: '请登录'
+            message: '抱歉,该众筹已经结束!'
           });
           return;
         }
@@ -156,6 +160,15 @@
           });
           return;
         }
+
+        if (!this.isEosLogin) {
+          this.$message({
+            type: 'error',
+            message: '请登录'
+          });
+          return;
+        }
+
         if (_this.buyInputVal == 0) {
           this.$message({
             type: 'error',
@@ -186,7 +199,25 @@
         });
       },
       exchangeSubmit: function () {
+        var contractAccount = this.info.contract;
+        var amount = this.buyInputVal;
+        var buyMemo = this.info.buyMemo;
+        buyMemo = "buy";
 
+        this.scatterBuy(contractAccount, amount, buyMemo);
+      },
+      scatterBuy: function (contract_account, amount, memo) {
+        var _this = this;
+        _this.eos().contract('eosio.token', { requiredFields: _this.requiredFields }).then(contract => {
+          return contract.transfer(
+            _this.account.name,
+            contract_account,
+            parseFloat(amount).toFixed(4) + ' EOS',
+            memo,
+            {
+              authorization: [`${_this.account.name}@${_this.account.authority}`]
+            });
+        })
       }
     },
     filters: {
@@ -201,6 +232,11 @@
     computed: {
       ...mapGetters({
         isEosLogin: 'loginState/isEosLogin'
+      }),
+      ...mapState({
+        eos: state => state.loginState.eosLoginState.eos,
+        requiredFields: state => state.loginState.eosLoginState.requiredFields,
+        account: state => state.loginState.eosLoginState.account
       }),
       progressPercent: function () {
         if (typeof this.info.target == 'undefined' || this.info.target == 0) {
@@ -235,6 +271,16 @@
 </script>
 
 <style scoped>
+  .refreash-btn:hover { -webkit-animation: rotate 1.4s linear infinite; }
+
+  @-webkit-keyframes rotate {
+    0% { -webkit-transform: rotate(0deg); }
+    25% { -webkit-transform: rotate(90deg); }
+    50% { -webkit-transform: rotate(180deg); }
+    75% { -webkit-transform: rotate(270deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+
   .top-right-tip { font-size: 12px; }
 
   .top-right-progress { margin-top: 38px; }

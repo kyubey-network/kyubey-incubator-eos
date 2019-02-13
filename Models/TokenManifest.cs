@@ -34,6 +34,8 @@ namespace Andoromeda.Kyubey.Incubator.Models
 
         public TokenManifestBasicContract Contract { get; set; }
 
+        public TokenManifestBasicContractExchangeInfo ContractExchangeInfo { get; set; }
+
         public string Website { get; set; }
 
         public string Github { get; set; }
@@ -56,5 +58,12 @@ namespace Andoromeda.Kyubey.Incubator.Models
         public string Pricing { get; set; }
 
         public string Depot { get; set; }
+    }
+
+    public class TokenManifestBasicContractExchangeInfo
+    {
+        public string SellMemo { get; set; }
+
+        public string BuyMemo { get; set; }
     }
 }

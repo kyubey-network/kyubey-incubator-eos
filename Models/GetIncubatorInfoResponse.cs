@@ -31,5 +31,7 @@ namespace Andoromeda.Kyubey.Incubator.Models
         public string Protocol { get; set; }
 
         public string WhitePaper { get; set; }
+
+        public string BuyMemo { get; set; }
     }
 }

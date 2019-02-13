@@ -8,6 +8,7 @@ import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 fontawesome.library.add(
   require('@fortawesome/fontawesome-free-solid/faEnvelope'),
   require('@fortawesome/fontawesome-free-solid/faStar'),
+  require('@fortawesome/fontawesome-free-solid/faSyncAlt'),
   require('@fortawesome/fontawesome-free-solid/faGraduationCap'),
   require('@fortawesome/fontawesome-free-solid/faHome'),
   require('@fortawesome/fontawesome-free-solid/faList'),

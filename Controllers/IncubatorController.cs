@@ -177,6 +177,7 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
                 EOSBalance = (decimal)eosBalance,
                 TokenBalance = (decimal)tokenBalance,
                 Contract = tokenInfo.Basic?.Contract?.Pricing ?? tokenInfo.Basic?.Contract?.Transfer,
+                BuyMemo = tokenInfo.Basic?.ContractExchangeInfo?.BuyMemo,
                 CurrentRaised = dbToken.Raised,
                 IsFavorite = false,
                 Protocol = tokenInfo.Basic?.Protocol,

@@ -36,7 +36,7 @@
     </div>
     <div class="container home-title page-containner">
       <h1>{{$t('Find Project')}}</h1>
-      <router-link :to="'/list'">
+      <router-link :to="'/list'" class="more-link">
         {{$t('More')}} >>
       </router-link>
     </div>
@@ -71,6 +71,8 @@
 </script>
 
 <style>
+  .more-link { color: rgba(0,0,0,1); }
+    .more-link:hover { color: rgba(0,0,0,1); }
   .home-title { margin-top: 48px; margin-bottom: 32px; }
     .home-title h1 { display: inline; font-size: 24px; font-weight: 500; }
     .home-title a { font-size: 14px; float: right; padding-top: 10px; font-weight: 400; margin-right: 36px; }
