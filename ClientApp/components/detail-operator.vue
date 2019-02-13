@@ -83,7 +83,7 @@
       </div>
     </div>
     <div class="top-right-row">
-      <el-input-number v-model="buyInputVal" controls-position="right" :precision="4" :step="0.0001" :min="0" style="width:274px;" placeholder="输入购买数量"></el-input-number>
+      <el-input-number v-model="buyInputVal" controls-position="right" :precision="4" :step="0.0001" :min="0" style="width:274px;" v-bind:placeholder="$t('enter the buy quantity')"></el-input-number>
       <button type="button" class="btn btn-info buy-btn" @click="exchange">{{$t('Buy')}}</button>
       <span class="current-state">{{$t('Price')}}：{{info.currentPrice}} EOS</span> <span class="current-state ">{{$t('Balance')}}：{{info.eosBalance}} EOS / {{info.tokenBalance}} {{tokenId}}</span><a @click="refresh"><icon class="ml-1 refreash-btn" icon="sync-alt" /></a>
     </div>
@@ -123,20 +123,23 @@
         this.getInfo();
       },
       viewWhitePaper() {
+        var _this = this;
+        //_this.$t('or');
         if (this.info.whitePaper == null) {
           this.$message({
             type: 'error',
-            message: '暂未上传白皮书'
+            message: _this.$t('No white papers uploaded')
           });
           return;
         }
         window.open(location.protocol + "//" + location.host + "//" + this.info.whitePaper, '_blank');
       },
       goDex() {
+        var _this = this;
         if (this.projectState == 0) {
           this.$message({
             type: 'error',
-            message: '暂未开放,敬请期待!'
+            message: _this.$t('to be continued')
           });
           return;
         }
@@ -147,7 +150,7 @@
         if (this.projectState == 2) {
           this.$message({
             type: 'error',
-            message: '抱歉,该众筹已经结束!'
+            message: _this.$t('Sorry, this crowdfunding is over!')
           });
           return;
         }
@@ -155,7 +158,7 @@
         if (this.projectState == 0) {
           this.$message({
             type: 'error',
-            message: '暂未开放,敬请期待!'
+            message: _this.$t('to be continued')
           });
           return;
         }
@@ -163,7 +166,7 @@
         if (!this.isEosLogin) {
           this.$message({
             type: 'error',
-            message: '请登录'
+            message: _this.$t('Please login')
           });
           return;
         }
@@ -171,29 +174,29 @@
         if (_this.buyInputVal == 0) {
           this.$message({
             type: 'error',
-            message: '请输入有效的EOS买入数量!'
+            message: _this.$t('Please enter a valid EOS buy quantity!')
           });
           return;
         }
 
-        if (_this.buyInputVal > _this.info.balance) {
+        if (_this.buyInputVal > _this.info.eosBalance) {
           this.$message({
             type: 'info',
-            message: '买入的数量不能大于当前的余额'
+            message: _this.$t('The number of purchases cannot be greater than the current balance')
           });
           return;
         }
 
-        this.$confirm(`此操作将会花费${_this.buyInputVal}EOS, 是否继续?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(_this.$t('exchange.confirm', { n: _this.buyInputVal }), _this.$t('prompt'), {
+          confirmButtonText: _this.$t('confirm'),
+          cancelButtonText: _this.$t('cancel'),
           type: 'warning'
         }).then(() => {
           _this.exchangeSubmit();
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '交易失败'
+            message: _this.$t('exchange failed')
           });
         });
       },

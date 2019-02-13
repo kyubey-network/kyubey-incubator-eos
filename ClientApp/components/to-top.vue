@@ -1,7 +1,7 @@
 <template>
-    <div>
-      <img v-if="scrollBar>position" @click="toTop(speed)" class="img-top" src="/img/icon/TOP.png" />
-    </div>
+  <div>
+    <img v-if="scrollBar>position" @click="toTop(speed)" class="img-top" src="/img/icon/TOP.png" />
+  </div>
 </template>
 
 <script>
@@ -41,12 +41,6 @@
 </script>
 
 <style>
-  .img-top {
-    position: fixed;
-    right: 40px;
-    bottom: 466px;
-  }
-    .img-top:hover {
-      background: #b1b1b185;
-    }
+  .img-top { position: fixed; right: 40px; bottom: 60px; border: 1px ridge #D7D7D7; }
+    .img-top:hover { cursor: pointer; }
 </style>

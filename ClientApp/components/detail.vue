@@ -31,7 +31,7 @@
           </div>
           <div v-if="currentNav=='update'" class="">
             <div v-for="item in wording.updates">
-              <h1>{{wording.updates.time}} {{wording.updates.title}}</h1>
+              <h1>{{item.time| formatDate}} {{item.title}}</h1>
               <span v-html="marked(item.content)"></span>
             </div>
           </div>
@@ -47,16 +47,20 @@
         </div>
       </div>
     </div>
+    <toTop speed="80" position="50"></toTop>
   </div>
 
 </template>
 
 <script>
   import marked from 'marked'
+  import toTop from './to-top.vue'
+  import { formatDate } from '../common/date.js'
   import DetailOperator from './detail-operator'
   export default {
     components: {
       'detail-operator': DetailOperator,
+      toTop
     },
     data() {
       return {
@@ -66,6 +70,22 @@
 
         }
       };
+    },
+    filters: {
+      formatDateTime: function (timeStr) {
+        if (typeof timeStr == 'undefined') {
+          return null;
+        }
+        let date = new window.Date(timeStr);
+        return formatDate(date, 'yyyy-MM-dd hh:mm')
+      },
+      formatDate: function (timeStr) {
+        if (typeof timeStr == 'undefined') {
+          return null;
+        }
+        let date = new window.Date(timeStr);
+        return formatDate(date, 'yyyy-MM-dd')
+      }
     },
     methods: {
       marked: function (input) {
@@ -100,11 +120,14 @@
   .content-containner img { max-width: 100%; }
   .content-containner h1 { font-size: 20px; }
   .content-containner h2 { font-size: 18px; }
+  .content-containner h3 { font-size: 16px; }
+  .content-containner h4 { font-size: 14px; }
+  .content-containner h5 { font-size: 14px; }
   .content-containner p { font-size: 14px; }
 </style>
 
 <style scoped>
-  
+
   .page-bottom-left-box { max-width: 100%; }
   .token-description { margin-top: 19px; }
   .detail-right { width: 438px; display: inline-block; margin-left: 58px; }

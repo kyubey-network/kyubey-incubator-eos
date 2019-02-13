@@ -8,5 +8,6 @@
   "meetone.tip": "Version required 1.1.8 above",
   "Scatter.Text": "Scatter is an EOS wallet. Please make sure that Scatter is installed. Scatter website: https://get-scatter.com",
   "QrCode.Tip1": "App wallet QR code scanning login",
-  "QrCode.Tip2": "Please make sure that App version supports QR code scanning authorization."
+  "QrCode.Tip2": "Please make sure that App version supports QR code scanning authorization.",
+  "exchange.confirm": "This operation will cost {n} EOS, will it continue?"
 }

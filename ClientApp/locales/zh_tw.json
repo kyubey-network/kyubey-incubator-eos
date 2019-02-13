@@ -57,5 +57,17 @@
   "QR code is expired": "二維碼已經過期",
   "tp.tip": "版本號至少為 Android 0.4.6、iOS 0.4.4",
   "math.tip": "版本號至少為 1.6.5",
-  "meetone.tip": "版本號至少為 1.1.8"
+  "meetone.tip": "版本號至少為 1.1.8",
+  "No white papers uploaded": "暫未上傳白皮書",
+  "to be continued": "敬請期待",
+  "enter the buy quantity": "輸入購買數量",
+  "Sorry, this crowdfunding is over!": "抱歉,該眾籌已經結束!",
+  "Please login": "請登錄",
+  "Please enter a valid EOS buy quantity!": "請輸入有效的EOS買入數量!",
+  "The number of purchases cannot be greater than the current balance": "買入的數量不能大於當前的余額",
+  "exchange.confirm": "此操作將會花費{n}EOS, 是否繼續?",
+  "prompt": "提示",
+  "confirm": "確定",
+  "cancel": "取消",
+  "exchange failed": "交易失敗"
 }

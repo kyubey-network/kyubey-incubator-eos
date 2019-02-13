@@ -114,7 +114,7 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
 
             var banners = tokenRepository.GetTokenIncubationBannereRelativePaths(id, request.Lang).Select(x => $"/token_assets/" + x).ToList();
 
-            var updates = tokenRepository.GetTokenIncubatorUpdates(id, request.Lang)?.OrderBy(x => x.Time)?.ToList();
+            var updates = tokenRepository.GetTokenIncubatorUpdates(id, request.Lang)?.OrderBy(x => x.Time)?.OrderByDescending(x => x.Time).ToList();
 
             var response = new GetWordingResponse()
             {
