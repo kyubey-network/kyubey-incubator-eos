@@ -5,7 +5,7 @@
         <div class=" footer-leftbox ">
           <p class="footer-header">{{$t('About')}}</p>
           <router-link tag="a" :to="'/about-us'" class="footer-subheader bottom-hyperlink">{{$t('About us')}}</router-link>
-          <p class="footer-subheader">{{$t('Join us')}}</p>
+          <router-link tag="a" :to="'/join-us'" class="footer-subheader bottom-hyperlink">{{$t('Join us')}}</router-link>
         </div>
         <div class=" footer-leftbox ">
           <p class="footer-header">{{$t('Help')}}</p>
@@ -62,8 +62,8 @@
 </script>
 
 <style scoped>
-  .email-button { width: 265px; height: 35px; background-color: rgba(77,77,77,1); border: 0; margin-top: 6px; font-weight: 500; color: rgba(231,231,231,1); }
-  .email-input { width: 265px; height: 35px; font-size: 14px; padding: 7px; }
-  .bottom-hyperlink { color: black; }
-    .bottom-hyperlink:hover { text-decoration: underline; }
+    .email-button { width: 265px; height: 35px; background-color: rgba(77,77,77,1); border: 0; margin-top: 6px; font-weight: 500; color: rgba(231,231,231,1); }
+    .email-input { width: 265px; height: 35px; font-size: 14px; padding: 7px; }
+    .bottom-hyperlink { color: black; display:block; }
+      .bottom-hyperlink:hover { text-decoration: underline; }
 </style>
