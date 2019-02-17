@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Andoromeda.Framework.EosNode" Version="0.3.0" />
-    <PackageReference Include="Andoromeda.Framework.GitHub" Version="1.0.0" />
+    <PackageReference Include="Andoromeda.Framework.GitHub" Version="1.0.1" />
     <PackageReference Include="Andoromeda.Framework.Logger" Version="1.0.0" />
     <PackageReference Include="Andoromeda.Kyubey.Models" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

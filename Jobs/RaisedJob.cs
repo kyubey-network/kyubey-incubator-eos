@@ -12,7 +12,7 @@ namespace Andoromeda.Kyubey.Incubator.Jobs
 {
     public class RaisedJob : Job
     {
-        [Invoke(Begin = "2018-11-01 0:00", Interval = 500, SkipWhileExecuting = true)]
+        [Invoke(Begin = "2018-11-01 0:00", Interval = 1000 * 60 * 2, SkipWhileExecuting = true)]
         public void GetRaised(KyubeyContext db, ILogger logger, NodeApiInvoker nodeApiInvoker, TokenRepositoryFactory tokenRepositoryFactory)
         {
             try
@@ -24,19 +24,19 @@ namespace Andoromeda.Kyubey.Incubator.Jobs
                 {
                     var token = tokenRepository.GetSingle(x.Id);
 
-                    //if (token.Incubation.Begin_Time.HasValue && DateTime.UtcNow < TimeZoneInfo.ConvertTimeToUtc(token.Incubation.Begin_Time.Value))
-                    //{
-                    //    continue;
-                    //}
+                    if (DateTime.UtcNow < TimeZoneInfo.ConvertTimeToUtc(token.Incubation.Begin_Time ?? DateTime.MinValue))
+                    {
+                        continue;
+                    }
 
-                    //if (DateTime.UtcNow > TimeZoneInfo.ConvertTimeToUtc(token.Incubation.DeadLine))
-                    //{
-                    //    continue;
-                    //}
+                    if (DateTime.UtcNow > TimeZoneInfo.ConvertTimeToUtc(token.Incubation.DeadLine))
+                    {
+                        continue;
+                    }
 
                     var depot = token.Basic.Contract.Depot ?? token.Basic.Contract.Pricing ?? token.Basic.Contract.Transfer;
 
-                    if (string.IsNullOrWhiteSpace(depot))
+                    if (string.IsNullOrWhiteSpace(depot) || token.Basic.Contract_Exchange_Info == null)
                         continue;
 
                     var seq = GetOrCreateRaisedSeq(token.Id, db);
