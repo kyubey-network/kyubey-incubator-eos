@@ -217,7 +217,17 @@
             memo,
             {
               authorization: [`${_this.account.name}@${_this.account.authority}`]
-            });
+            }).then(trx => {
+              this.$message({
+                type: 'success',
+                message: _this.$t('exchange succeed')
+              });
+            }).catch(error => {
+              this.$message({
+                type: 'error',
+                message: error
+              });
+            });;
         })
       }
     },
