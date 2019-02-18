@@ -75,7 +75,7 @@
         this.$i18n.locale = param;
       },
       showLoginModal() {
-        this.$refs.loginModalRef.isShow = true;
+        this.$root.eosLoginIsShow = true;
       },
       switchAccount() {
         this.eosLogout();

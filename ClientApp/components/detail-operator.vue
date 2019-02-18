@@ -91,11 +91,32 @@
       <button type="button" class="btn btn-outline-info big-btn" @click="viewWhitePaper">{{$t('WhitePaper')}}</button>
       <button type="button" class="btn btn-outline-info big-btn" @click="goDex">{{$t('Exchange')}}</button>
     </div>
+
+    <el-dialog :visible.sync="$root.eosExchangeIsShow" custom-class="modal-custom" width="400px">
+      <div class="container small" style="color: rgb(180, 180, 180);">
+        <div class="row">
+          <div class="col-12 d-flex flex-column align-items-center justify-content-between">
+            <p class="text-center mb-3">{{$t('Scan code to complete the transaction')}}</p>
+            <div id="exchangeQRCode" class="qrcode"
+                 v-loading="!$root.signalr.connected"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading"
+                 element-loading-background="#f6f6f6"></div>
+            <div class="qrcode-mask d-flex flex-column align-items-center justify-content-center" v-if="!qrcodeIsValid">
+              <p>{{$t('QR code is expired')}}</p>
+            </div>
+            <p class="text-center mt-2 mb-2">{{$t('EOS Account')}}: {{$root.eosUsername}}</p>
+            <p class="text-center mb-0">{{$t('Trading Volume')}}： {{buyInputVal}} EOS</p>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script>
   import { formatDate } from '../common/date.js'
   import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
+  import QRCode from 'qrcodejs2';
   export default {
     data() {
       return {
@@ -103,9 +124,12 @@
         infoBoxLoading: true,
         buyInputVal: 0,
         tokenId: null,
+        qrcodeIsValid: false,
+        qrcodeTimer: null,
         info: {
 
-        }
+        },
+        qrCodeLoading: false
       };
     },
     methods: {
@@ -204,8 +228,11 @@
         var contractAccount = this.info.contract;
         var amount = this.buyInputVal;
         var buyMemo = this.info.buyMemo;
-
-        this.scatterBuy(contractAccount, amount, buyMemo);
+        if (this.loginMode == 'Simple Wallet') {
+          this.qrCodeBuy(contractAccount, amount, buyMemo);
+        }
+        else
+          this.scatterBuy(contractAccount, amount, buyMemo);
       },
       scatterBuy: function (contract_account, amount, memo) {
         var _this = this;
@@ -227,8 +254,56 @@
                 type: 'error',
                 message: error
               });
-            });;
+            });
         })
+      },
+      qrCodeBuy: function (contract_account, amount, memo) {
+        var _this = this;
+        var uuid = _this.$root.eosLoginUuid;
+        _this.$root.eosExchangeIsShow = true;
+        this.$nextTick(() => {
+          var from = this.account.name;
+          var to = contract_account;
+
+          var exchangeContent = this._getExchangeRequestObj(from, to, amount, 'eosio.token', "EOS", 4, uuid, memo);
+          document.getElementById("exchangeQRCode").innerHTML = "";
+          new QRCode("exchangeQRCode", {
+            text: JSON.stringify(exchangeContent),
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.L
+          });
+
+          var _this = this;
+          this.qrcodeIsValid = true;
+          clearTimeout(_this.qrcodeTimer);
+          _this.qrcodeTimer = setTimeout(function () {
+            _this.qrcodeIsValid = false;
+          }, 3 * 60 * 1000);
+        })
+      },
+      _getExchangeRequestObj: function (from, to, amount, contract, symbol, precision, uuid, dappData) {
+        var _this = this;
+        var resultObj = {
+          "protocol": "SimpleWallet",
+          "version": "1.0",
+          "dappName": "Kyubey",
+          "dappIcon": `${_this.$root.currentHost}/img/KYUBEY_logo.png`,
+          "action": "transfer",
+          "from": from,
+          "to": to,
+          "amount": amount,
+          "contract": contract,
+          "symbol": symbol,
+          "precision": precision,
+          "dappData": dappData,
+          "desc": `${symbol} exchange`,
+          "expired": new Date().getTime() + (3 * 60 * 1000),
+          "callback": `${_this.$root.currentHost}/api/v1/simplewallet/callback/exchange?uuid=${uuid}&sign=`
+        };
+        return resultObj;
       }
     },
     filters: {
@@ -247,7 +322,8 @@
       ...mapState({
         eos: state => state.loginState.eosLoginState.eos,
         requiredFields: state => state.loginState.eosLoginState.requiredFields,
-        account: state => state.loginState.eosLoginState.account
+        account: state => state.loginState.eosLoginState.account,
+        loginMode: state => state.loginState.eosLoginState.loginMode
       }),
       progressPercent: function () {
         if (typeof this.info.target == 'undefined' || this.info.target == 0) {
@@ -272,14 +348,20 @@
       '$root.isEosLogin': function () {
         var _this = this;
         _this.getInfo();
-      },
+      }
     },
     created() {
       this.tokenId = this.$route.params.id;
       this.getInfo();
+    },
+    mounted() {
     }
   };
 </script>
+
+<style>
+  .modal-custom .el-dialog__body { padding: 0; padding: 0 30px 30px 30px; color: #000000; font-size: 14px; }
+</style>
 
 <style scoped>
   .refreash-btn:hover { -webkit-animation: rotate 1.4s linear infinite; }

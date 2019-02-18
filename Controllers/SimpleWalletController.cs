@@ -57,11 +57,12 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
         }
 
         [HttpPost("callback/exchange")]
+        [HttpGet("callback/exchange")]
         public async Task<IActionResult> ExchangeCallbackAsync(GetSimpleWalletExchangeRequest request,
             [FromServices]IConfiguration config,
              [FromServices]ILogger logger,
             [FromServices]IHubContext<SimpleWalletHub> hubContext,
-            [FromServices]AesCrypto aesCrypto,
+            //[FromServices]AesCrypto aesCrypto,
             CancellationToken cancellationToken)
         {
             logger.LogInfo(JsonConvert.SerializeObject(request));

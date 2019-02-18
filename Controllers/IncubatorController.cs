@@ -151,7 +151,7 @@ namespace Andoromeda.Kyubey.Incubator.Controllers
             var supporterCount = await db.RaiseLogs.Where(x =>
                       (x.Timestamp > (tokenInfo.Incubation.Begin_Time ?? DateTime.MinValue)
                       && x.Timestamp < tokenInfo.Incubation.DeadLine) &&
-                      x.TokenId == dbToken.Id && !x.Account.StartsWith("eosio.")).CountAsync();
+                      x.TokenId == dbToken.Id && !x.Account.StartsWith("eosio.")).Select(x => x.Account).Distinct().CountAsync();
 
             GetSymbolSupplyResponse symbolSupply = null;
             TokenContractPriceModel currentPrice = null;

@@ -142,11 +142,11 @@ namespace Andoromeda.Kyubey.Incubator.Jobs
 
         async Task HandleRaiseCountAsync(KyubeyContext db, string token, DateTime startTime, DateTime endTime)
         {
-            var currentRaisedCount = db.RaiseLogs.Where(x => x.TokenId == token && x.Timestamp >= startTime && x.Timestamp <= endTime).Select(x => x.Amount).Sum();
+            var currentRaisedSum = db.RaiseLogs.Where(x => x.TokenId == token && x.Timestamp >= startTime && x.Timestamp <= endTime).Select(x => x.Amount).Sum();
             var row = db.Tokens.FirstOrDefault(x => x.Id == token);
             if (row != null)
             {
-                row.Raised = (decimal)currentRaisedCount;
+                row.Raised = (decimal)currentRaisedSum;
                 await db.SaveChangesAsync();
             }
         }

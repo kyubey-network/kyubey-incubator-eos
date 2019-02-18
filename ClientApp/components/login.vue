@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :visible.sync="isShow" custom-class="login-modal-custom" width="800px">
+    <el-dialog :visible.sync="$root.eosLoginIsShow" custom-class="login-modal-custom" width="800px">
       <div class="container small" style="color: rgb(180, 180, 180);">
         <div class="row">
           <div class="col-5 d-flex flex-column align-items-center justify-content-between">
@@ -16,7 +16,11 @@
           </div>
           <div class="col-5 d-flex flex-column align-items-center justify-content-between">
             <p class="text-center mb-3">{{$t('QrCode.Tip1')}}</p>
-            <div id="loginQRCode" class="qrcode"></div>
+            <div id="loginQRCode" class="qrcode"
+                 v-loading="!$root.signalr.connected"
+                 element-loading-text="Loading"
+                 element-loading-spinner="el-icon-loading"
+                 element-loading-background="#f6f6f6"></div>
             <div class="qrcode-mask d-flex flex-column align-items-center justify-content-center" v-if="!qrcodeIsValid">
               <p>{{$t('QR code is expired')}}</p>
               <a @click="refreshLoginQRCode">{{$t('Refresh')}}</a>
@@ -38,7 +42,7 @@
   import ScatterEOS from 'scatterjs-plugin-eosjs';
   import Eos from 'eosjs'
   import { mapActions, mapState, mapMutations } from 'vuex'
-  const signalR = require("@aspnet/signalr");
+
 
   ScatterJS.plugins(new ScatterEOS());
 
@@ -50,20 +54,13 @@
         qrcodeIsValid: false,
         qrcodeTimer: null,
         currentHost: location.protocol + "//" + location.host,
-        eosLoginUuid: null,
         eosNetwork: {
           blockchain: 'eos',
           protocol: 'https',
           host: 'nodes.get-scatter.com',
           port: 443,
           chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-        },
-        signalr: {
-          simplewallet: {
-            connection: null,
-            listeners: []
-          }
-        },
+        }
       };
     },
     methods: {
@@ -99,25 +96,12 @@
           });
         });
       },
-      generateUUID: function () {
-        var s = [];
-        var hexDigits = "0123456789abcdef";
-        for (var i = 0; i < 36; i++) {
-          s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-        }
-        s[14] = "4";
-        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
-        s[8] = s[13] = s[18] = s[23] = "-";
-
-        var uuid = s.join("");
-        return uuid;
-      },
       logoutScatterAsync() {
         return ScatterJS.scatter.forgetIdentity();
       },
       refreshLoginQRCode() {
         this.$nextTick(() => {
-          var loginContent = this._getLoginRequestObj(this.eosLoginUuid);
+          var loginContent = this._getLoginRequestObj(this.$root.eosLoginUuid);
           document.getElementById("loginQRCode").innerHTML = "";
           new QRCode("loginQRCode", {
             text: JSON.stringify(loginContent),
@@ -135,7 +119,6 @@
             _this.qrcodeIsValid = false;
           }, 3 * 60 * 1000);
         })
-
       },
       _getLoginRequestObj: function (uuid) {
         var _this = this;
@@ -152,51 +135,9 @@
         };
         return loginObj;
       },
-      initSignalR: function () {
-        var self = this;
-
-        self.signalr.simplewallet.connection = new signalR.HubConnectionBuilder()
-          .configureLogging(signalR.LogLevel.Trace)
-          .withUrl('/signalr/simplewallet', {})
-          .withHubProtocol(new signalR.JsonHubProtocol())
-          .build();
-
-        // TODO: Receiving some signals for updating query view.
-        self.signalr.simplewallet.connection.on('simpleWalletLoginSucceeded', (account) => {
-          var _this = this;
-          var accountObject = {
-            name: account
-          };
-
-          _this.eosLogin({ account: accountObject, loginMode: 'Simple Wallet', eos: null, requiredFields: null, eosScatter: null });
-          _this.isShow = false;
-        });
-
-        self.signalr.simplewallet.connection.start().then(function () {
-          self.eosLoginUuid = self.generateUUID();
-          return self.signalr.simplewallet.connection.invoke('bindUUID', self.eosLoginUuid);
-        });
-
-        self.signalr.simplewallet.connection.onclose(async () => {
-          await self.restartSignalR();
-        });
-      },
-      restartSignalR: async function () {
-        var self = this;
-        try {
-          await self.signalr.simplewallet.connection.start();
-          self.signalr.simplewallet.connection.invoke('bindUUID', self.eosLoginUuid);
-          console.log('reconnected');
-        } catch (err) {
-          console.warn(err);
-          if (err.statusCode > 500 || err.statusCode == 0) {
-            setTimeout(() => self.restartSignalR(), 2000);
-          }
-        }
-      },
     },
     watch: {
-      isShow: function (newVal) {
+      '$root.eosLoginIsShow': function (newVal) {
         if (newVal) {
           this.refreshLoginQRCode();
         }
@@ -213,7 +154,6 @@
     },
     created: function () {
       this.scatterLoginAsync();
-      this.initSignalR();
     },
   }
 </script>

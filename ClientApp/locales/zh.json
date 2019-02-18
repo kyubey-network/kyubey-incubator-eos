@@ -74,5 +74,8 @@
   "Please enter your email address": "请输入你的Email地址",
   "Subscribe succeed": "订阅成功",
   "Email Address": "邮件地址",
-  "exchange succeed": "交易成功"
+  "exchange succeed": "交易成功",
+  "EOS Account": "EOS账号",
+  "Trading Volume": "交易额",
+  "Scan code to complete the transaction": "扫码完成交易"
 }
