@@ -89,7 +89,7 @@
             const eos = () => eosScatter.eos(_this.eosNetwork, Eos, {});
 
             _this.eosLogin({ account, loginMode: "scatter", eos, requiredFields: _this.eosRequiredFields, eosScatter });
-            _this.isShow = false;
+            _this.$root.eosLoginIsShow = false;
 
           }).catch(error => {
             console.error(error);
