@@ -57,6 +57,26 @@
   import toTop from './to-top.vue'
   import { formatDate } from '../common/date.js'
   import DetailOperator from './detail-operator'
+
+  marked.setOptions({
+    "baseUrl": null,
+    "breaks": false,
+    "gfm": true,
+    "headerIds": true,
+    "headerPrefix": "",
+    "highlight": null,
+    "langPrefix": "language-",
+    "mangle": true,
+    "pedantic": true,
+    "sanitize": false,
+    "sanitizer": null,
+    "silent": false,
+    "smartLists": false,
+    "smartypants": false,
+    "tables": true,
+    "xhtml": false
+  });
+
   export default {
     components: {
       'detail-operator': DetailOperator,

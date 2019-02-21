@@ -1,12 +1,11 @@
 <template>
     <div class="container top-slider">
-      <h1>{{$t('About us')}}</h1>
+      <h1>{{$t('Contact us')}}</h1>
         <div>
           <h2>
-            {{$t('Who are we?')}}
+            {{$t('How can you contact us?')}}
           </h2>
-          <p>
-            {{$t('Contact us text 1')}}<a href="mailto:kefu@kyubey.network">kefu@kyubey.network</a> {{$t('Contact us text 2')}}
+          <p v-html="$t('Contact us html')">
           </p>
         </div>
     </div>

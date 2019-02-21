@@ -4,7 +4,7 @@
       <div class="d-flex">
         <div class=" footer-leftbox ">
           <p class="footer-header">{{$t('About')}}</p>
-          <p class="footer-subheader"><router-link :to="'/about-us'" class="bottom-hyperlink">{{$t('About us')}}</router-link></p>
+          <p class="footer-subheader"><router-link :to="'/contact-us'" class="bottom-hyperlink">{{$t('Contact us')}}</router-link></p>
           <p class="footer-subheader"> <router-link :to="'/join-us'" class="bottom-hyperlink">{{$t('Join us')}}</router-link></p>
         </div>
         <div class=" footer-leftbox ">

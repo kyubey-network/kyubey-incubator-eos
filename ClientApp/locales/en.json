@@ -2,12 +2,13 @@
   "currentLang": "English",
   "total_project": "{total} projects",
   "Subscribe.Text": "Type in your email address and subscribe to us. Will receive our latest news. Thank you for your attention;)",
-  "Risk warning content": "1. Your participation in crowdfunding is a process that supports the idea of ​​turning ideas into reality, rather than direct commodity trading, so there is a certain risk. Please choose and support crowdfunding projects according to your own judgment. <br /> 2. Crowdfunding exists between promoters and supporters. As a third-party platform, Money Point Network only provides services such as cyberspace and technical support. The crowdfunding return products and commitments are provided and made by the sponsors, and the point network does not participate in and guarantee the specific operation of the crowdfunding project. <br /> 3. The sponsorship is responsible for the return of the crowdfunding project and other follow-up services. In the event that the initiator is unable to issue a return, delay the issuance of the return, and does not provide a return for the follow-up service, you need to negotiate directly with the sponsor, and the company does not assume any responsibility for this. <br />4. Crowdfunding may fail due to various factors such as the ability and experience of the sponsor, market risk, and legal risk. For projects that fail before the end of the crowdfunding period, the funds for your support project will be returned to you all the way; for crowdfunding successful projects, supporters cannot apply for a refund through the Mobility Platform, if the supporter for any reason at this time If you want a refund, you need to negotiate directly with the sponsor. If the sponsor agrees to the refund, you need to return the money directly to the supporter. The point will not deduct the refund amount from the billable amount. You have no support for the project sponsors and additional rewards. Once the crowdfunding is successful, no refund will be given, except for crowdfunding failures...",
+  "Risk warning content": "",
   "tp.tip": "Version requires Android 0.4.6 or iOS 0.4.4 above",
   "math.tip": "Version requires 1.6.5 above",
   "meetone.tip": "Version required 1.1.8 above",
   "Scatter.Text": "Scatter is an EOS wallet. Please make sure that Scatter is installed. Scatter website: https://get-scatter.com",
   "QrCode.Tip1": "App wallet QR code scanning login",
   "QrCode.Tip2": "Please make sure that App version supports QR code scanning authorization.",
-  "exchange.confirm": "This operation will cost {n} EOS, will it continue?"
+  "exchange.confirm": "This operation will cost {n} EOS, will it continue?",
+  "Contact us html": "If you need help with Kyubey, or you have any suggestions, please send an email to:<a href=\"mailto:info@kyubey.network\">info@kyubey.network</a> We will reply you as soon as possible. <p class='mt-2'>Thank you for your support!</p>"
 }
