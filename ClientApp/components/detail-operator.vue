@@ -167,7 +167,7 @@
           });
           return;
         }
-        window.open('https://www.kyubey.net/exchange/' + this.tokenId, '_blank');
+        window.open('https://dex.kyubey.network/exchange/' + this.tokenId, '_blank');
       },
       exchange() {
         var _this = this;

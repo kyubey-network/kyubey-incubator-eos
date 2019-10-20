@@ -21,6 +21,7 @@
     "core-js": "^2.5.3",
     "element-ui": "^2.4.11",
     "eosjs": "^16.0.9",
+    "jquery": "^3.4.1",
     "marked": "^0.6.0",
     "qrcodejs2": "0.0.2",
     "scatterjs-core": "2.4.0",

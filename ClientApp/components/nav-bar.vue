@@ -16,7 +16,7 @@
             <a class="nav-link" href="#">{{$t('Find Project')}}</a>
           </router-link>
           <li class="nav-item ">
-            <a class="nav-link" href="http://kyubey.net" target="_blank">{{$t('Dex')}}</a>
+            <a class="nav-link" href="http://dex.kyubey.network" target="_blank">{{$t('Dex')}}</a>
           </li>
           <!--<li class="nav-item ">
             <a class="nav-link" href="#" @click="$root.toBeContinued">发布项目</a>
